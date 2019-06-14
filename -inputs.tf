@@ -32,7 +32,7 @@ variable "name_prefix" {
 }
 
 variable "name_suffix" {
-  description = "String to append on object names"
+  description = " String to append to object names. This is optional, so start with dash if using."
   type = "string"
   default = ""
 }
@@ -40,5 +40,4 @@ variable "name_suffix" {
 variable "env_name" {
   description = "Environment name string to be used for decisions and name generation"
   type = "string"
-  default = ""
 }

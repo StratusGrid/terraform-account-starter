@@ -28,9 +28,9 @@ output "terraform_state_dynamodb_table" {
   value = "${module.terraform_state.dynamodb_table}"
 }
 
-output "terraform_state_kms_key_id" {
+output "terraform_state_kms_key_arn" {
   description = "kms key to use for encrytption when storing/reading terraform state configuration"
-  value = "${module.terraform_state.kms_key_id}"
+  value = "${module.terraform_state.kms_default_key_arn}"
 }
 
 output "terraform_state_config_s3_key" {

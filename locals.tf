@@ -1,3 +1,3 @@
 locals {
-  name_suffix  = "-${var.name_suffix}-${var.env_name}"
+  name_suffix  = "${var.name_suffix}-${var.env_name}"
 }

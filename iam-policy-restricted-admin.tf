@@ -36,5 +36,5 @@ data "aws_iam_policy_document" "restricted_admin" {
 resource "aws_iam_policy" "restricted_admin" {
   name        = "${var.name_prefix}restricted-admin${local.name_suffix}"
   description = "Policy to grant restricted admin. This admin can't do some functions such as delete the CloudTrail audit trail."
-  policy      = "${data.aws_iam_policy_document.diq_admin.json}"
+  policy      = "${data.aws_iam_policy_document.restricted_admin.json}"
 }
