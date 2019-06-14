@@ -1,0 +1,11 @@
+terraform {
+  backend "s3" {
+    acl             = "bucket-owner-full-control"
+    encrypt         = true
+    key             = ""
+    region          = ""
+    bucket          = ""
+    dynamodb_table  = ""
+    kms_key_id      = ""
+  }
+}
