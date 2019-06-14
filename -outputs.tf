@@ -35,5 +35,5 @@ output "terraform_state_kms_key_arn" {
 
 output "terraform_state_config_s3_key" {
   description = "key to use for terraform state key configuration - this is the s3 object key where the config will be stored"
-  value = "${var.name_prefix}${local.name_suffix}.tfstate"
+  value = "${var.name_prefix}-account${local.name_suffix}.tfstate"
 }
