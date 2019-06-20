@@ -1,6 +1,6 @@
 module "cpu-credit-balance-lambda" {
   source = "StratusGrid/lambda-event-handler-cpu-creditbalance/aws"
-  version = "1.0.3"
+  version = "1.0.4"
   name_prefix = "${var.name_prefix}"
   name_suffix = "${local.name_suffix}"
   unique_name = "event-handler-cpu-credit-balance"
