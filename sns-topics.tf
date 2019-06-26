@@ -6,11 +6,3 @@ resource "aws_sns_topic" "infrastructure_alerts" {
     )
   )}"
 }
-
-resource "aws_sns_topic" "aws_config_stream" {
-  name = "${var.name_prefix}-aws-config-stream${local.name_suffix}"
-  tags = "${merge(local.common_tags,
-    map(
-    )
-  )}"
-}
