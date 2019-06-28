@@ -1,6 +1,6 @@
 module "restricted_admin" {
   source = "StratusGrid/iam-role-cross-account-trusting/aws"
-  version = "1.0.6"
+  version = "1.0.7"
   # source = "github.com/StratusGrid/terraform-aws-iam-role-cross-account-trusting"
   role_name = "${var.name_prefix}-restricted-admin-role${local.name_suffix}"
   principal_arns = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]

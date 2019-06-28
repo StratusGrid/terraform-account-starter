@@ -37,3 +37,8 @@ output "terraform_state_config_s3_key" {
   description = "key to use for terraform state key configuration - this is the s3 object key where the config will be stored"
   value = "${var.name_prefix}-account${local.name_suffix}.tfstate"
 }
+
+output "iam_role_url_restricted_admin" {
+  description = "URL to assume restricted admin role in this account"
+  value = "https://signin.aws.amazon.com/switchrole?account=${data.aws_caller_identity.current.account_id}&roleName=${module.restricted_admin.role_name}&displayName="
+}
