@@ -40,5 +40,5 @@ output "terraform_state_config_s3_key" {
 
 output "iam_role_url_restricted_admin" {
   description = "URL to assume restricted admin role in this account"
-  value = "https://signin.aws.amazon.com/switchrole?account=${data.aws_caller_identity.current.account_id}&roleName=${module.restricted_admin.role_name}&displayName="
+  value = "${module.restricted_admin.role_assumption_url}"
 }
