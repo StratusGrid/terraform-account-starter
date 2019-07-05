@@ -6,25 +6,27 @@ locals {
   trusting_role_arn_restricted_read_only = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${var.name_prefix}-restricted-read-only-role"
 }
 
-resource "aws_iam_group" "restricted_admin" {
+module "iam_group_restricted_admin" {
+  source = "StratusGrid/iam-group-with-user-self-service/aws"
+  version = "1.0.0"
   name = "${var.name_prefix}-restricted-admin"
 }
-
 
 module "iam_cross_account_trust_map_restricted_admin" {
   source = "StratusGrid/iam-cross-account-trust-maps/aws"
   version = "1.1.0"
   trusting_role_arn = "${local.trusting_role_arn_restricted_admin}"
-  trusted_policy_name = "${aws_iam_group.restricted_admin.name}"
+  trusted_policy_name = "${module.iam_group_restricted_admin.group_name}"
   trusted_group_names = [
-    "${aws_iam_group.restricted_admin.name}"
+    "${var.name_prefix}-restricted-admin" #Statically named because of 'count cannot be computed' error. Should be fine with .12
   ]
   require_mfa = true  
   input_tags = "${local.common_tags}"
 }
 
-
-resource "aws_iam_group" "restricted_read_only" {
+module "iam_group_restricted_read_only" {
+  source = "StratusGrid/iam-group-with-user-self-service/aws"
+  version = "1.0.0"
   name = "${var.name_prefix}-restricted-read-only"
 }
 
@@ -32,9 +34,9 @@ module "iam_cross_account_trust_map_restricted_read_only" {
   source = "StratusGrid/iam-cross-account-trust-maps/aws"
   version = "1.1.0"
   trusting_role_arn = "${local.trusting_role_arn_restricted_read_only}"
-  trusted_policy_name = "${aws_iam_group.restricted_read_only.name}"
+  trusted_policy_name = "${module.iam_group_restricted_read_only.group_name}"
   trusted_group_names = [
-    "${aws_iam_group.restricted_read_only.name}"
+    "${var.name_prefix}-restricted-read-only"
   ]
   require_mfa = true  
   input_tags = "${local.common_tags}"
