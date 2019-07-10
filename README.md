@@ -6,4 +6,4 @@ awsudo -u \<profile\> terraform apply -var region=us-east-1 -var name_prefix=\<p
 awsudo -u \<profile\> terraform apply -var region=us-east-1 -var name_prefix=\<prefix\> -var env_name=\<env\> -target aws_iam_policy.read_only_restrictions
 
 Apply:
-awsudo -u \<profile\> terraform apply -var region=us-east-1 -var name_prefix=\<prefix\> -var env_name=\<env\
+awsudo -u \<profile\> terraform apply -var region=us-east-1 -var name_prefix=\<prefix\> -var env_name=\<env\>
