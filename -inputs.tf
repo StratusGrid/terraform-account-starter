@@ -26,6 +26,12 @@ variable "token" {
   default = ""
 }
 
+variable "aws_profile" {
+  description = "AWS Profile credentials to use"
+  type = "string"
+  default = ""
+}
+
 variable "name_prefix" {
   description = "String to use as prefix on object names"
   type = "string"

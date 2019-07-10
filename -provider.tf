@@ -4,6 +4,7 @@ provider "aws" {
   access_key = "${var.access_key}"
   secret_key = "${var.secret_key}"
   token      = "${var.token}"
+  profile    = "${var.aws_profile}"
 }
 
 #Extra Providers for Config and other Multi-Region configurations like AWS Config
@@ -14,6 +15,7 @@ provider "aws" {
   access_key = "${var.access_key}"
   secret_key = "${var.secret_key}"
   token      = "${var.token}"
+  profile    = "${var.aws_profile}"
 }
 
 provider "aws" {
@@ -23,6 +25,7 @@ provider "aws" {
   access_key = "${var.access_key}"
   secret_key = "${var.secret_key}"
   token      = "${var.token}"
+  profile    = "${var.aws_profile}"
 }
 
 provider "aws" {
@@ -32,6 +35,7 @@ provider "aws" {
   access_key = "${var.access_key}"
   secret_key = "${var.secret_key}"
   token      = "${var.token}"
+  profile    = "${var.aws_profile}"
 }
 
 provider "aws" {
@@ -41,4 +45,5 @@ provider "aws" {
   access_key = "${var.access_key}"
   secret_key = "${var.secret_key}"
   token      = "${var.token}"
+  profile    = "${var.aws_profile}"
 }
