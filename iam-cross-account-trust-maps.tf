@@ -2,8 +2,8 @@
 #If you are doing this for across account, you will want ot change the caller_identity_curent variables out for a users account id variable.
 #If you do this for multiple accounts, you should prepend/append with environment. For instance, restricted_admin -> prod_restricted_admin, restricted-admin becomes restricted-admin-prod and so forth.
 locals {
-  trusting_role_arn_restricted_admin = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${var.name_prefix}-restricted-admin-role"
-  trusting_role_arn_restricted_read_only = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${var.name_prefix}-restricted-read-only-role"
+  trusting_role_arn_restricted_admin = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${var.name_prefix}-restricted-admin-role${local.name_suffix}"
+  trusting_role_arn_restricted_read_only = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${var.name_prefix}-restricted-read-only-role${local.name_suffix}"
 }
 
 module "iam_group_restricted_admin" {
@@ -36,7 +36,7 @@ module "iam_cross_account_trust_map_restricted_read_only" {
   trusting_role_arn = "${local.trusting_role_arn_restricted_read_only}"
   trusted_policy_name = "${module.iam_group_restricted_read_only.group_name}"
   trusted_group_names = [
-    "${var.name_prefix}-restricted-read-only${local.name_suffix}"
+    "${var.name_prefix}-restricted-read-only"
   ]
   require_mfa = true  
   input_tags = "${local.common_tags}"
