@@ -44,6 +44,6 @@ output "iam_role_url_restricted_admin" {
 }
 
 output "iam_role_url_restricted_read_only" {
-  description = "URL to assume restricted admin role in this account"
+  description = "URL to assume restricted read only role in this account"
   value = "${module.restricted_read_only.role_assumption_url}"
 }
