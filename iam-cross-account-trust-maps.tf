@@ -9,7 +9,7 @@ locals {
 module "iam_group_restricted_admin" {
   source = "StratusGrid/iam-group-with-user-self-service/aws"
   version = "1.0.0"
-  name = "${var.name_prefix}-restricted-admin"
+  name = "${var.name_prefix}-restricted-admin${local.name_suffix}"
 }
 
 module "iam_cross_account_trust_map_restricted_admin" {
@@ -36,7 +36,7 @@ module "iam_cross_account_trust_map_restricted_read_only" {
   trusting_role_arn = "${local.trusting_role_arn_restricted_read_only}"
   trusted_policy_name = "${module.iam_group_restricted_read_only.group_name}"
   trusted_group_names = [
-    "${var.name_prefix}-restricted-read-only"
+    "${var.name_prefix}-restricted-read-only${local.name_suffix}"
   ]
   require_mfa = true  
   input_tags = "${local.common_tags}"
