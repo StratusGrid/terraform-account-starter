@@ -18,6 +18,11 @@ output "common_tags" {
   value       = local.common_tags
 }
 
+output "log_bucket_id" {
+  description = "ID of logging bucket"
+  value       = module.s3_bucket_logging.bucket_id
+}
+
 output "terraform_state_bucket" {
   description = "s3 bucket to store terraform state"
   value       = module.terraform_state.bucket
