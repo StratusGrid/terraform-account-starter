@@ -19,15 +19,22 @@ awsudo -u \<profile\> terraform apply -var region=us-east-1 -var name_prefix=\<p
 - Tag the default RDS DB Security Groups in all regions with your required tags (cli to do so is below)
 
 ```
-awsudo -u sdp-mfa aws rds add-tags-to-resource --resource-name "arn:aws:rds:us-east-1:<account_number>:secgrp:default" --tags Key=Environment,Value=prd,Key=Customer,Value=Shared --region us-east-1
+aws rds add-tags-to-resource --resource-name "arn:aws:rds:us-east-1:<account_number>:secgrp:default" --tags Key=Environment,Value=prd,Key=Customer,Value=Shared --region us-east-1
 
-awsudo -u sdp-mfa aws rds add-tags-to-resource --resource-name "arn:aws:rds:us-east-2:<account_number>:secgrp:default" --tags Key=Environment,Value=prd,Key=Customer,Value=Shared --region us-east-2
+aws rds add-tags-to-resource --resource-name "arn:aws:rds:us-east-2:<account_number>:secgrp:default" --tags Key=Environment,Value=prd,Key=Customer,Value=Shared --region us-east-2
 
-awsudo -u sdp-mfa aws rds add-tags-to-resource --resource-name "arn:aws:rds:us-west-1:<account_number>:secgrp:default" --tags Key=Environment,Value=prd,Key=Customer,Value=Shared --region us-west-1
+aws rds add-tags-to-resource --resource-name "arn:aws:rds:us-west-1:<account_number>:secgrp:default" --tags Key=Environment,Value=prd,Key=Customer,Value=Shared --region us-west-1
 
-awsudo -u sdp-mfa aws rds add-tags-to-resource --resource-name "arn:aws:rds:us-west-2:<account_number>:secgrp:default" --tags Key=Environment,Value=prd,Key=Customer,Value=Shared --region us-west-2
+aws rds add-tags-to-resource --resource-name "arn:aws:rds:us-west-2:<account_number>:secgrp:default" --tags Key=Environment,Value=prd,Key=Customer,Value=Shared --region us-west-2
 ```
-
+- Enable updated account features for ECS
+```
+aws ecs put-account-setting-default --name serviceLongArnFormat --value enabled --region us-east-1
+aws ecs put-account-setting-default --name taskLongArnFormat --value enabled --region us-east-1
+aws ecs put-account-setting-default --name containerInstanceLongArnFormat --value enabled --region us-east-1
+aws ecs put-account-setting-default --name awsvpcTrunking --value enabled --region us-east-1
+aws ecs put-account-setting-default --name containerInsights --value enabled --region us-east-1
+```
 ## Tools to Use
 
 - awsudo
