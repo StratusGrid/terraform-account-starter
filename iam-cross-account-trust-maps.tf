@@ -12,9 +12,9 @@ module "iam_group_restricted_admin" {
 }
 
 module "iam_cross_account_trust_map_restricted_admin" {
-  #source              = "StratusGrid/iam-cross-account-trust-maps/aws"
-  #version             = "2.0.0"
-  source = "github.com/StratusGrid/terraform-aws-iam-cross-account-trust-maps"
+  source  = "StratusGrid/iam-cross-account-trust-maps/aws"
+  version = "2.0.1"
+  #source = "github.com/StratusGrid/terraform-aws-iam-cross-account-trust-maps"
 
   trusting_role_arn   = module.restricted_admin.role_arn
   trusted_policy_name = module.iam_group_restricted_admin.group_name
@@ -35,8 +35,8 @@ module "iam_group_restricted_read_only" {
 }
 
 module "iam_cross_account_trust_map_restricted_read_only" {
-  source              = "StratusGrid/iam-cross-account-trust-maps/aws"
-  version             = "2.0.0"
+  source  = "StratusGrid/iam-cross-account-trust-maps/aws"
+  version = "2.0.1"
   # source = "github.com/StratusGrid/terraform-aws-iam-cross-account-trust-maps"
 
   trusting_role_arn   = module.restricted_read_only.role_arn
