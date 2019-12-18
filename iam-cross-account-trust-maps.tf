@@ -8,7 +8,7 @@ module "iam_group_restricted_admin" {
   version = "2.0.0"
   # source  = "github.com/StratusGrid/terraform-aws-iam-group-with-user-self-service"
 
-  name    = "${var.name_prefix}-restricted-admin"
+  name = "${var.name_prefix}-restricted-admin"
 }
 
 module "iam_cross_account_trust_map_restricted_admin" {
@@ -31,7 +31,7 @@ module "iam_group_restricted_read_only" {
   version = "2.0.0"
   # source  = "github.com/StratusGrid/terraform-aws-iam-group-with-user-self-service"
 
-  name    = "${var.name_prefix}-restricted-read-only"
+  name = "${var.name_prefix}-restricted-read-only"
 }
 
 module "iam_cross_account_trust_map_restricted_read_only" {
@@ -44,7 +44,7 @@ module "iam_cross_account_trust_map_restricted_read_only" {
   trusted_group_names = [
     module.iam_group_restricted_read_only.group_name
   ]
-  
+
   require_mfa = true
   input_tags  = merge(local.common_tags, {})
 }

@@ -1,6 +1,6 @@
 module "cpu_credit_balance_lambda" {
-  source   = "StratusGrid/lambda-event-handler-cpu-creditbalance/aws"
-  version  = "2.0.0"
+  source  = "StratusGrid/lambda-event-handler-cpu-creditbalance/aws"
+  version = "2.0.0"
   # source   = "github.com/StratusGrid/terraform-aws-lambda-event-handler-cpu-creditbalance"
 
   name_prefix      = var.name_prefix

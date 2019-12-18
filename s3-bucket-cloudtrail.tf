@@ -1,6 +1,6 @@
 module "cloudtrail" {
-  source      = "StratusGrid/cloudtrail/aws"
-  version     = "2.1.1"
+  source  = "StratusGrid/cloudtrail/aws"
+  version = "2.1.1"
   # source      = "github.com/StratusGrid/terraform-aws-cloudtrail"
 
   name_prefix = var.name_prefix
