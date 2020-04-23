@@ -49,3 +49,25 @@ module "iam_cross_account_trust_map_restricted_read_only" {
   input_tags  = merge(local.common_tags, {})
 }
 
+module "iam_group_restricted_approver" {
+  source  = "StratusGrid/iam-group-with-user-self-service/aws"
+  version = "2.0.0"
+  # source  = "github.com/StratusGrid/terraform-aws-iam-group-with-user-self-service"
+
+  name = "${var.name_prefix}-restricted-approver"
+}
+
+module "iam_cross_account_trust_map_restricted_approver" {
+  source  = "StratusGrid/iam-cross-account-trust-maps/aws"
+  version = "2.0.1"
+  #source = "github.com/StratusGrid/terraform-aws-iam-cross-account-trust-maps"
+
+  trusting_role_arn   = module.restricted_approver.role_arn
+  trusted_policy_name = module.iam_group_restricted_approver.group_name
+  trusted_group_names = [
+    module.iam_group_restricted_approver.group_name
+  ]
+
+  require_mfa = true
+  input_tags  = merge(local.common_tags, {})
+}

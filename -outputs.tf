@@ -58,3 +58,7 @@ output "iam_role_url_restricted_read_only" {
   value       = module.restricted_read_only.role_assumption_url
 }
 
+output "iam_role_url_restricted_approver" {
+  description = "URL to assume restricted approver role in this account"
+  value       = module.restricted_approver.role_assumption_url
+}
