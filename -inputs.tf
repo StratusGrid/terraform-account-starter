@@ -65,3 +65,9 @@ variable "source_repo" {
   description = "name of repo which holds this code"
   type        = string
 }
+
+variable "trusted_users_account_arns" {
+  description = "Account which users are provisioned in and should be granted access to cross account roles. Enter like arn:aws:iam::123456789012:root"
+  type        = list(string)
+  default     = []
+}

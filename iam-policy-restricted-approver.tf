@@ -1,8 +1,12 @@
-data "aws_iam_policy" "read_only_access" {
+data "aws_iam_policy" "approver_access" {
   arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
 }
 
-data "aws_iam_policy_document" "read_only_restrictions" {
+data "aws_iam_policy" "approver_permission" {
+  arn = "arn:aws:iam::aws:policy/AWSCodePipelineApproverAccess"
+}
+
+data "aws_iam_policy_document" "approver_restrictions" {
   statement {
     effect = "Deny"
     actions = [
@@ -17,7 +21,7 @@ data "aws_iam_policy_document" "read_only_restrictions" {
       "${module.s3_bucket_logging_us_east_2.bucket_arn}/*",
       "${module.s3_bucket_logging_us_west_1.bucket_arn}/*",
       "${module.s3_bucket_logging_us_west_2.bucket_arn}/*",
-      "${module.cloudtrail.s3_bucket_arn}/*",
+      # "${module.cloudtrail.s3_bucket_arn}/*",
     ]
     sid = "DenyReadOnlyDataRetrieval"
   }
@@ -38,9 +42,8 @@ data "aws_iam_policy_document" "read_only_restrictions" {
   }
 }
 
-resource "aws_iam_policy" "read_only_restrictions" {
-  name        = "${var.name_prefix}-read-only-restrictions${local.name_suffix}"
-  description = "Policy to restrict read only users from accessing data and secrets."
+resource "aws_iam_policy" "approver_restrictions" {
+  name        = "${var.name_prefix}-approver-restrictions${local.name_suffix}"
+  description = "Policy to restrict approver users from accessing data and secrets."
   policy      = data.aws_iam_policy_document.read_only_restrictions.json
 }
-
