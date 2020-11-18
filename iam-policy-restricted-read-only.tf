@@ -7,6 +7,8 @@ data "aws_iam_policy_document" "read_only_restrictions" {
     effect = "Deny"
     actions = [
       "s3:GetObject",
+      "s3:GetObjectVersion",
+      "s3:GetObjectVersionForReplication",
       "lambda:GetFunction",
       "workdocs:Get*",
       "workmail:Get*",
