@@ -7,3 +7,8 @@
 
 # .tfvars files
 *.tfvars
+files/dist/*.zip
+files/*.zip
+*.zip
+
+.idea
