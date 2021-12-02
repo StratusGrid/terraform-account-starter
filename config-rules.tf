@@ -16,6 +16,10 @@ module "aws_config_rules_us_east_1" {
   providers = {
     aws = aws.us-east-1
   }
+
+  depends_on = [
+    module.aws_config_recorder_us_east_1
+  ]
 }
 
 module "aws_config_rules_us_east_2" {
