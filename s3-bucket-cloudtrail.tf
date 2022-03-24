@@ -1,4 +1,5 @@
 module "cloudtrail" {
+  #ts:skip=AC_AWS_0207 SG_Sub_Module
   source  = "StratusGrid/cloudtrail/aws"
   version = "2.2.0"
   # source      = "github.com/StratusGrid/terraform-aws-cloudtrail"

@@ -61,6 +61,14 @@ content: |-
 
   See the pre-commit tfsec documentation [here](https://github.com/antonbabenko/pre-commit-terraform#terraform_tfsec), this includes on how to bypass warnings
 
+  ### Terrascan
+
+  Terrascan can't do comment based rule skips for modules, so they must be specific in the `.pre-commit-config.yaml` file otherwise it will always fail
+
+  ### Terraform validate
+  
+  Terraform Validate can't be used in the Git Pre-Commit hooks as several resources are generated at run time
+
   ### Template Documentation
   
   A sample template Git Repo with how we should setup client infrastructure, in this case it's the StratusGrid Account Starter Template.

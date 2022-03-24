@@ -3,7 +3,6 @@ repos:
     rev: v1.63.0 # v.1.63.0 and above require bash 5 from brew
     hooks:
       - id: terraform_fmt
-      - id: terraform_validate
       - id: terraform_docs # Update our output, if updates it will force a failure which is good
         args:
           - '--args=-c .config/.terraform-docs.yml'
@@ -15,6 +14,7 @@ repos:
         args:
           - '--args=--severity=high'
           - '--args=--non-recursive'
+          - '--args=--skip-rules=AC_AWS_0214,AC_AWS_0215,AC_AWS_0207,AC_AWS_0483' # Terrascan will only not scan sub modules if you skip the rules for everything!
       - id: terraform_tflint
         args:
           - '--args=--only=terraform_deprecated_interpolation'
