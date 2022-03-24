@@ -1,4 +1,6 @@
 module "aws_config_rules_us_east_1" {
+  count = var.control_tower_enabled == true ? 1 : 0
+
   source                        = "StratusGrid/config-rules/aws"
   version                       = "1.0.1"
   include_global_resource_rules = true #only include global resource on one region to prevent duplicate rules
@@ -23,6 +25,8 @@ module "aws_config_rules_us_east_1" {
 }
 
 module "aws_config_rules_us_east_2" {
+  count = var.control_tower_enabled == true ? 1 : 0
+
   source                = "StratusGrid/config-rules/aws"
   version               = "1.0.1"
   source_recorder       = module.aws_config_recorder_us_east_2.aws_config_configuration_recorder_id

@@ -1,4 +1,6 @@
 module "aws_config_recorder_us_east_1" {
+  count = var.control_tower_enabled == true ? 1 : 0
+
   source                        = "StratusGrid/config-recorder/aws"
   version                       = "1.0.2"
   log_bucket_id                 = module.s3_bucket_logging_us_east_1.bucket_id
@@ -9,6 +11,8 @@ module "aws_config_recorder_us_east_1" {
 }
 
 module "aws_config_recorder_us_east_2" {
+  count = var.control_tower_enabled == true ? 1 : 0
+
   source        = "StratusGrid/config-recorder/aws"
   version       = "1.0.2"
   log_bucket_id = module.s3_bucket_logging_us_east_2.bucket_id
@@ -18,6 +22,8 @@ module "aws_config_recorder_us_east_2" {
 }
 
 module "aws_config_recorder_us_west_1" {
+  count = var.control_tower_enabled == true ? 1 : 0
+
   source        = "StratusGrid/config-recorder/aws"
   version       = "1.0.2"
   log_bucket_id = module.s3_bucket_logging_us_west_1.bucket_id
@@ -27,6 +33,8 @@ module "aws_config_recorder_us_west_1" {
 }
 
 module "aws_config_recorder_us_west_2" {
+  count = var.control_tower_enabled == true ? 1 : 0
+
   source        = "StratusGrid/config-recorder/aws"
   version       = "1.0.2"
   log_bucket_id = module.s3_bucket_logging_us_west_2.bucket_id
@@ -34,4 +42,3 @@ module "aws_config_recorder_us_west_2" {
     aws = aws.us-west-2
   }
 }
-
