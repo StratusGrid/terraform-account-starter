@@ -1,4 +1,6 @@
 module "restricted_approver" {
+  count = var.aws_sso_enabled == false ? 1 : 0
+
   source         = "StratusGrid/iam-role-cross-account-trusting/aws"
   version        = "2.0.0"
   role_name      = "${var.name_prefix}-restricted-approver-role${local.name_suffix}"

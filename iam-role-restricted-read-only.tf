@@ -1,4 +1,6 @@
 module "restricted_read_only" {
+  count = var.aws_sso_enabled == false ? 1 : 0
+
   source  = "StratusGrid/iam-role-cross-account-trusting/aws"
   version = "2.0.0"
   # source = "github.com/StratusGrid/terraform-aws-iam-role-cross-account-trusting"

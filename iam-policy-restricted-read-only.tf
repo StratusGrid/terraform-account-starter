@@ -41,8 +41,9 @@ data "aws_iam_policy_document" "read_only_restrictions" {
 }
 
 resource "aws_iam_policy" "read_only_restrictions" {
+  count = var.aws_sso_enabled == false ? 1 : 0
+
   name        = "${var.name_prefix}-read-only-restrictions${local.name_suffix}"
   description = "Policy to restrict read only users from accessing data and secrets."
   policy      = data.aws_iam_policy_document.read_only_restrictions.json
 }
-

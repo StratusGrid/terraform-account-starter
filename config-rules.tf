@@ -1,5 +1,5 @@
 module "aws_config_rules_us_east_1" {
-  count = var.control_tower_enabled == true ? 1 : 0
+  count = var.control_tower_enabled == false ? 1 : 0
 
   source                        = "StratusGrid/config-rules/aws"
   version                       = "1.0.1"
@@ -25,7 +25,7 @@ module "aws_config_rules_us_east_1" {
 }
 
 module "aws_config_rules_us_east_2" {
-  count = var.control_tower_enabled == true ? 1 : 0
+  count = var.control_tower_enabled == false ? 1 : 0
 
   source                = "StratusGrid/config-rules/aws"
   version               = "1.0.1"
@@ -38,6 +38,10 @@ module "aws_config_rules_us_east_2" {
   providers = {
     aws = aws.us-east-2
   }
+
+  depends_on = [
+    module.aws_config_recorder_us_east_2
+  ]
 }
 
 module "aws_config_rules_us_west_1" {
@@ -52,6 +56,10 @@ module "aws_config_rules_us_west_1" {
   providers = {
     aws = aws.us-west-1
   }
+
+  depends_on = [
+    module.aws_config_recorder_us_west_1
+  ]
 }
 
 module "aws_config_rules_us_west_2" {
@@ -66,5 +74,9 @@ module "aws_config_rules_us_west_2" {
   providers = {
     aws = aws.us-west-2
   }
+
+  depends_on = [
+    module.aws_config_recorder_us_west_2
+  ]
 }
 

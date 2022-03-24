@@ -47,3 +47,19 @@ variable "control_tower_enabled" {
   type        = bool
   default     = true
 }
+
+variable "aws_sso_enabled" {
+  description = "A boolean true/false for if Control Tower is deployed or will be deployed. By default this is true, and setting to true removes functions that are replaced by AWS SSO"
+  type        = bool
+  default     = true
+}
+
+variable "monthly_billing_threshold" {
+  description = "The maximum amount that can be billed after which a cloudwatch alarm triggers"
+  default     = "10000"
+}
+
+variable "currency" {
+  description = "This defines the currency in the monthly_billing_threshold"
+  default     = "USD"
+}

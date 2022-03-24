@@ -1,5 +1,5 @@
 module "aws_config_recorder_us_east_1" {
-  count = var.control_tower_enabled == true ? 1 : 0
+  count = var.control_tower_enabled == false ? 1 : 0
 
   source                        = "StratusGrid/config-recorder/aws"
   version                       = "1.0.2"
@@ -11,7 +11,7 @@ module "aws_config_recorder_us_east_1" {
 }
 
 module "aws_config_recorder_us_east_2" {
-  count = var.control_tower_enabled == true ? 1 : 0
+  count = var.control_tower_enabled == false ? 1 : 0
 
   source        = "StratusGrid/config-recorder/aws"
   version       = "1.0.2"
@@ -22,7 +22,7 @@ module "aws_config_recorder_us_east_2" {
 }
 
 module "aws_config_recorder_us_west_1" {
-  count = var.control_tower_enabled == true ? 1 : 0
+  count = var.control_tower_enabled == false ? 1 : 0
 
   source        = "StratusGrid/config-recorder/aws"
   version       = "1.0.2"
@@ -33,7 +33,7 @@ module "aws_config_recorder_us_west_1" {
 }
 
 module "aws_config_recorder_us_west_2" {
-  count = var.control_tower_enabled == true ? 1 : 0
+  count = var.control_tower_enabled == false ? 1 : 0
 
   source        = "StratusGrid/config-recorder/aws"
   version       = "1.0.2"
