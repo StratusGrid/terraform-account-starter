@@ -1,0 +1,85 @@
+version: ""
+
+formatter: markdown table
+
+name: terraform-account-starter
+
+content: |-
+  # terraform-account-starter
+
+  GitHub: [StratusGrid/terraform-account-starter](https://github.com/StratusGrid/terraform-account-starter)
+
+  ### Template Documentation
+  
+  What does this repo do?
+  More details are available [here](https://example.com) in confluence.
+
+  ## Documentation
+
+  This repo is self documenting via Terraform Docs, please see the note at the bottom.
+
+  ---
+
+  {{ .Requirements }}
+
+  {{ .Resources }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  ---
+  ## Assumptions we make
+
+  * What do we assume?
+
+  ## Just a note
+
+  ### First Run
+
+  Is there anything special someone needs to know about this repo or code?
+
+
+  ## Apply this template via Terraform
+
+  ### Dev
+  ```bash
+  terraform init -backend-config=./init-tfvars/dev.tfvars 
+  terraform apply -var-file ./apply-tfvars/dev.tfvars
+  ```
+
+  ### Stg
+  ```bash
+  terraform init -backend-config=./init-tfvars/stg.tfvars 
+  terraform apply -var-file ./apply-tfvars/stg.tfvars
+  ```
+
+  ### Prd
+  ```bash
+  terraform init -backend-config=./init-tfvars/prd.tfvars 
+  terraform apply -var-file ./apply-tfvars/prd.tfvars
+  ```
+
+  Note: Before reading, uncomment the code for the environment that you
+  wish to apply the code to. This goes for both the init-tfvars and apply-tfvars
+  folders.
+
+  ## Contributors
+  - Your Name [YourSGGitHubUN](https://github.com/YourSGGitHubUN)
+
+  Note, manual changes to the README will be overwritten when the documentation is updated. To update the documentation, run `terraform-docs -c .config/.terraform-docs.yml .`
+
+sections:
+  show:
+    - requirements
+    - resources
+    - inputs
+    - outputs
+
+sort:
+  enabled: true
+  by: name
+
+output:
+  file: README.md
+  mode: replace
