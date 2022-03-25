@@ -13,6 +13,8 @@ repos:
       - id: terrascan
         args:
           - '--args=-c .config/terrascan.yaml'
+          - '--args=--non-recursive'
+          - '--args=-i terraform' #If we don't specify this it came back with Docker failures and produces a non zero exit code
       - id: terraform_tflint
         args:
           - '--args=--only=terraform_deprecated_interpolation'

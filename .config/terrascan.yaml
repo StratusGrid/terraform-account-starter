@@ -1,8 +1,6 @@
-#See docs here: https://runterrascan.io/docs/_print/, most of the links are broken sadly :(
+#See docs here: https://runterrascan.io/docs/_print/#command-to-specify-config-file, most of the links are broken sadly :(
 severity:
   level: high
-non_recursive:
-policy_type: aws
 rules:
   skip-rules: # To bypass submodules you need to skip rules here, otherwise it will fail the build
     - AC_AWS_021
