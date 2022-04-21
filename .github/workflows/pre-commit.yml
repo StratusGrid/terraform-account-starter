@@ -21,6 +21,42 @@ jobs:
       minVersion: ${{ steps.minMax.outputs.minVersion }}
       maxVersion: ${{ steps.minMax.outputs.maxVersion }}
 
+  preCommitMinVersion:
+    name: Min TF pre-commit
+    runs-on: ubuntu-latest
+    needs: getBaseVersion
+    strategy:
+      fail-fast: false
+      matrix:
+        version:
+          - ${{ needs.getBaseVersion.outputs.minVersion }}
+    steps:
+      - uses: actions/setup-go@v2
+        with:
+          go-version: "^1.16.6"
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install Python
+        uses: actions/setup-python@v2
+      - name: Install Terraform v${{ matrix.version }}
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: ${{ matrix.version }}
+      - name: Install pre-commit dependencies
+        run: |
+          pip install pre-commit
+          brew install tflint
+          brew install terrascan
+          brew install tfsec
+          brew install terraform-docs
+      - name: Inits
+        run: |
+          tflint --init
+      - name: Execute pre-commit
+        # Run all pre-commit checks on min version supported
+        if: ${{ matrix.version ==  needs.getBaseVersion.outputs.minVersion }}
+        run: pre-commit run --color=always --show-diff-on-failure --all-files
+
   preCommitMaxVersion:
     name: Max TF pre-commit
     runs-on: ubuntu-latest
@@ -33,7 +69,7 @@ jobs:
     steps:
       - uses: actions/setup-go@v2
         with:
-          go-version: '^1.16.6'
+          go-version: "^1.16.6"
       - name: Checkout
         uses: actions/checkout@v2
       - name: Install Python
@@ -44,14 +80,14 @@ jobs:
           terraform_version: ${{ matrix.version }}
       - name: Install pre-commit dependencies
         run: |
-           pip install pre-commit
-           brew install tflint
-           brew install terrascan
-           brew install tfsec
-           brew install terraform-docs
+          pip install pre-commit
+          brew install tflint
+          brew install terrascan
+          brew install tfsec
+          brew install terraform-docs
       - name: Inits
         run: |
-           tflint --init
+          tflint --init
       - name: Execute pre-commit
         # Run all pre-commit checks on max version supported
         if: ${{ matrix.version ==  needs.getBaseVersion.outputs.maxVersion }}

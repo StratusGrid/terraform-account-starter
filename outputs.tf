@@ -62,3 +62,13 @@ output "iam_role_url_restricted_approver" {
   description = "URL to assume restricted approver role in this account"
   value       = module.restricted_approver.role_assumption_url
 }
+
+output "sops_kms_id" {
+  description = "The KMS id you need to use for SOPs related files"
+  value       = aws_kms_alias.sops.arn
+}
+
+output "ec2_default_instance_arn" {
+  description = "The ec2 default instance IAM role that was created ARN"
+  value       = module.ec2_default_instance_profile.instance_profile_id
+}

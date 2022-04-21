@@ -65,3 +65,7 @@ variable "currency" {
   type        = string
   default     = "USD"
 }
+
+variable "payer_account" {
+  description = "A boolean true/false for if this is the payer"
+}

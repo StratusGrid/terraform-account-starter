@@ -34,22 +34,27 @@ aws ecs put-account-setting-default --name containerInsights --value enabled --r
 
 ## StratusGrid Standards we assume
 
-* All resource names and name tags shall use `_` and not `-`s
-* StratusGrid mostly follows the file names outlined [here](https://www.terraform-best-practices.com/code-structure), we use a `providers.tf` file for provider specific information
-* StratusGrid mainly uses the AWS provider, and this provider supports provider level tagging. We use that whenever possible, some resources don't explicitly support it so tags need to be checked.
-* The old naming standard for common files such as inputs, outputs, providers, etc was to prefix them with a `-`, this is no longer true as it's not POSIX compliant. Our pre-commit hooks will fail with this old standard.
-* StratusGrid generally follows the TerraForm standards outlined [here](https://www.terraform-best-practices.com/naming)
+- All resource names and name tags shall use `_` and not `-`s
+- StratusGrid mostly follows the file names outlined [here](https://www.terraform-best-practices.com/code-structure), we use a `providers.tf` file for provider specific information
+- StratusGrid mainly uses the AWS provider, and this provider supports provider level tagging. We use that whenever possible, some resources don't explicitly support it so tags need to be checked.
+- The old naming standard for common files such as inputs, outputs, providers, etc was to prefix them with a `-`, this is no longer true as it's not POSIX compliant. Our pre-commit hooks will fail with this old standard.
+- StratusGrid generally follows the TerraForm standards outlined [here](https://www.terraform-best-practices.com/naming)
 
 ## Repo Knowledge
 
 This repo has several base requirements
-* This repo is based upon the AWS `~> 4.6.0` provider
-* The following packages are installed via brew: `tflint`, `terrascan`, `terraform-docs`, `gitleaks`, `tfsec`, `pre-commit`, `tfsec`
-* Install `bash` through Brew for Bash 5.0, otherwise it will fail with the error that looks like `declare: -g: invalid option`
-* If you need more tflint plugins, please edit the `.tflint.hcl` file with the instructions from [here](https://github.com/terraform-linters/tflint)
-* It's highly recommend that you follow the Git Pre-Commit Instructions below, these will run in GitHub though they should be ran locally to reduce issues
-* By default Terraform docs will always run so our auto generated docs are always up to date
-* This repo has been tested with [awsume](https://stratusgrid.atlassian.net/wiki/spaces/TK/pages/1564966913/Awsume)
+- This repo is based upon the AWS `~> 4.9.0` provider
+- The following packages are installed via brew: `tflint`, `terrascan`, `terraform-docs`, `gitleaks`, `tfsec`, `pre-commit', 'sops`, `coreutils`
+- This assumes SOPs v3.7.2
+- Install `bash` through Brew for Bash 5.0, otherwise it will fail with the error that looks like `declare: -g: invalid option`
+- If you need more tflint plugins, please edit the `.tflint.hcl` file with the instructions from [here](https://github.com/terraform-linters/tflint)
+- It's highly recommend that you follow the Git Pre-Commit Instructions below, these will run in GitHub though they should be ran locally to reduce issues
+- By default Terraform docs will always run so our auto generated docs are always up to date
+- This repo has been tested with [awsume](https://stratusgrid.atlassian.net/wiki/spaces/TK/pages/1564966913/Awsume)
+
+### SOPs and Terraform
+
+See the [README_SOPs.md](README_SOPs.md) for how to use and configure SOPs.
 
 ### TFSec
 
@@ -57,7 +62,8 @@ See the pre-commit tfsec documentation [here](https://github.com/antonbabenko/pr
 
 ### Terrascan
 
-Terrascan can't do comment based rule skips for modules, so they must be specific in the `.pre-commit-config.yaml` file otherwise it will always fail
+Terrascan can't do comment based rule skips for modules, so they must be specific in the `.config/terrascan.yaml` file otherwise it will always fail.
+Several config options have to be specified in the `.pre-commit-config.yaml` as they can't be specified in the terrascan config file due to a lack of support.
 
 ### Terraform validate
 
@@ -75,7 +81,7 @@ This repo is self documenting via Terraform Docs, please see the note at the bot
 The way that this repo is structured is supposed to be an infrastructure starter, as well as a base psuedo code repo.
 Each file is generally self contained except where it can't be. All variables are in `variables.tf`, all data is in `data.tf`, and etc.
 
-### `client_vpn.tf`
+### `billing-alerts.tf`
 
 ### `data.tf`
 This data file contains all references for data providers, these are fairly generic.
@@ -109,6 +115,40 @@ One day this should be broken up into each file, maybe maybe not.
 ### `versions.tf`
 This file contains the required Terraform versions, as well as the required providers and their versions.
 
+## Documentation of Misc Config Files
+
+This section is supposed to outline what the misc configuration files do and what is there purpose
+
+### `.config/.terraform-docs.yml`
+This file auto generates your `README.md` file.
+
+### `.config/terrascan.yaml`
+This file has all of the configuration options required for Terrascan, this is where you would skip rules to.
+
+### `.github/sync-repo-settings.yaml`
+This file is our standard for how GitHub branch protection rules should be setup.
+
+### `.github/workflows/pre-commit.yml`
+This file contains the instructions for Github workflows, in specific this file run pre-commit and will allow the PR to pass or fail. This is a safety check and extras for if pre-commit isn't run locally.
+
+### `.vscode/settings.json`
+This file is a vscode workspace settings file.
+
+### `.gitignore`
+This is your gitignore, and contains a slew of default standards.
+
+### `.pre-commit-config.yaml`
+This file is the GIT pre-commit file and contains all of it's configuration options
+
+### `.prettierignore`
+This file is the ignore file for the prettier pre-commit actions. Specific files like our SOPS config files have to be ignored.
+
+### `.terraform.lock.hcl`
+This file contains the hashes of the Terraform providers and modules we're using.
+
+### `.tflint.hcl`
+This file contains the plugin data for TFLint to run.
+
 ---
 
 ## Requirements
@@ -116,7 +156,7 @@ This file contains the required Terraform versions, as well as the required prov
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.1.2 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.6.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.9.0 |
 
 ## Resources
 
@@ -129,7 +169,9 @@ This file contains the required Terraform versions, as well as the required prov
 | [aws_iam_policy.read_only_restrictions](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.restricted_admin](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_kms_alias.sns_topics](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
+| [aws_kms_alias.sops](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
 | [aws_kms_key.sns_topics](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
+| [aws_kms_key.sops](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
 | [aws_sns_topic.infrastructure_alerts](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic) | resource |
 
 ## Inputs
@@ -144,6 +186,7 @@ This file contains the required Terraform versions, as well as the required prov
 | <a name="input_monthly_billing_threshold"></a> [monthly\_billing\_threshold](#input\_monthly\_billing\_threshold) | The maximum amount that can be billed after which a cloudwatch alarm triggers | `string` | `"10000"` | no |
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | String to use as prefix on object names | `string` | n/a | yes |
 | <a name="input_override_name_suffix"></a> [override\_name\_suffix](#input\_override\_name\_suffix) | String to completely override the name\_suffix | `string` | `""` | no |
+| <a name="input_payer_account"></a> [payer\_account](#input\_payer\_account) | A boolean true/false for if this is the payer | `any` | n/a | yes |
 | <a name="input_prepend_name_suffix"></a> [prepend\_name\_suffix](#input\_prepend\_name\_suffix) | String to prepend to the name\_suffix used on object names. This is optional, so start with dash if using like so: -mysuffix. This will result in prefix-objectname-mysuffix-env | `string` | `""` | no |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region to target | `string` | n/a | yes |
 | <a name="input_source_repo"></a> [source\_repo](#input\_source\_repo) | URL of the repo which holds this code | `string` | n/a | yes |
@@ -155,12 +198,14 @@ This file contains the required Terraform versions, as well as the required prov
 |------|-------------|
 | <a name="output_account_id"></a> [account\_id](#output\_account\_id) | Account which terraform was run on |
 | <a name="output_common_tags"></a> [common\_tags](#output\_common\_tags) | tags which should be applied to all taggable objects |
+| <a name="output_ec2_default_instance_arn"></a> [ec2\_default\_instance\_arn](#output\_ec2\_default\_instance\_arn) | The ec2 default instance IAM role that was created ARN |
 | <a name="output_iam_role_url_restricted_admin"></a> [iam\_role\_url\_restricted\_admin](#output\_iam\_role\_url\_restricted\_admin) | URL to assume restricted admin role in this account |
 | <a name="output_iam_role_url_restricted_approver"></a> [iam\_role\_url\_restricted\_approver](#output\_iam\_role\_url\_restricted\_approver) | URL to assume restricted approver role in this account |
 | <a name="output_iam_role_url_restricted_read_only"></a> [iam\_role\_url\_restricted\_read\_only](#output\_iam\_role\_url\_restricted\_read\_only) | URL to assume restricted read only role in this account |
 | <a name="output_log_bucket_ids"></a> [log\_bucket\_ids](#output\_log\_bucket\_ids) | ID of logging bucket |
 | <a name="output_name_prefix"></a> [name\_prefix](#output\_name\_prefix) | string to prepend to all resource names |
 | <a name="output_name_suffix"></a> [name\_suffix](#output\_name\_suffix) | string to append to all resource names |
+| <a name="output_sops_kms_id"></a> [sops\_kms\_id](#output\_sops\_kms\_id) | The KMS id you need to use for SOPs related files |
 | <a name="output_terraform_state_bucket"></a> [terraform\_state\_bucket](#output\_terraform\_state\_bucket) | s3 bucket to store terraform state |
 | <a name="output_terraform_state_config_s3_key"></a> [terraform\_state\_config\_s3\_key](#output\_terraform\_state\_config\_s3\_key) | key to use for terraform state key configuration - this is the s3 object key where the config will be stored |
 | <a name="output_terraform_state_dynamodb_table"></a> [terraform\_state\_dynamodb\_table](#output\_terraform\_state\_dynamodb\_table) | dynamodb table to control terraform locking |

@@ -40,22 +40,27 @@ content: |-
 
   ## StratusGrid Standards we assume
 
-  * All resource names and name tags shall use `_` and not `-`s
-  * StratusGrid mostly follows the file names outlined [here](https://www.terraform-best-practices.com/code-structure), we use a `providers.tf` file for provider specific information
-  * StratusGrid mainly uses the AWS provider, and this provider supports provider level tagging. We use that whenever possible, some resources don't explicitly support it so tags need to be checked.
-  * The old naming standard for common files such as inputs, outputs, providers, etc was to prefix them with a `-`, this is no longer true as it's not POSIX compliant. Our pre-commit hooks will fail with this old standard.
-  * StratusGrid generally follows the TerraForm standards outlined [here](https://www.terraform-best-practices.com/naming)
+  - All resource names and name tags shall use `_` and not `-`s
+  - StratusGrid mostly follows the file names outlined [here](https://www.terraform-best-practices.com/code-structure), we use a `providers.tf` file for provider specific information.
+  - StratusGrid mainly uses the AWS provider, and this provider supports provider level tagging. We use that whenever possible, some resources don't explicitly support it so tags need to be checked.
+  - The old naming standard for common files such as inputs, outputs, providers, etc was to prefix them with a `-`, this is no longer true as it's not POSIX compliant. Our pre-commit hooks will fail with this old standard.
+  - StratusGrid generally follows the TerraForm standards outlined [here](https://www.terraform-best-practices.com/naming)
 
   ## Repo Knowledge
 
   This repo has several base requirements
-  * This repo is based upon the AWS `~> 4.6.0` provider
-  * The following packages are installed via brew: `tflint`, `terrascan`, `terraform-docs`, `gitleaks`, `tfsec`, `pre-commit`, `tfsec`
-  * Install `bash` through Brew for Bash 5.0, otherwise it will fail with the error that looks like `declare: -g: invalid option`
-  * If you need more tflint plugins, please edit the `.tflint.hcl` file with the instructions from [here](https://github.com/terraform-linters/tflint)
-  * It's highly recommend that you follow the Git Pre-Commit Instructions below, these will run in GitHub though they should be ran locally to reduce issues
-  * By default Terraform docs will always run so our auto generated docs are always up to date
-  * This repo has been tested with [awsume](https://stratusgrid.atlassian.net/wiki/spaces/TK/pages/1564966913/Awsume)
+  - This repo is based upon the AWS `~> 4.9.0` provider
+  - The following packages are installed via brew: `tflint`, `terrascan`, `terraform-docs`, `gitleaks`, `tfsec`, `pre-commit', 'sops`, `coreutils`
+  - This assumes SOPs v3.7.2
+  - Install `bash` through Brew for Bash 5.0, otherwise it will fail with the error that looks like `declare: -g: invalid option`
+  - If you need more tflint plugins, please edit the `.tflint.hcl` file with the instructions from [here](https://github.com/terraform-linters/tflint)
+  - It's highly recommend that you follow the Git Pre-Commit Instructions below, these will run in GitHub though they should be ran locally to reduce issues
+  - By default Terraform docs will always run so our auto generated docs are always up to date
+  - This repo has been tested with [awsume](https://stratusgrid.atlassian.net/wiki/spaces/TK/pages/1564966913/Awsume)
+
+  ### SOPs and Terraform
+
+  See the [README_SOPs.md](README_SOPs.md) for how to use and configure SOPs.
 
   ### TFSec
 
@@ -63,7 +68,8 @@ content: |-
 
   ### Terrascan
 
-  Terrascan can't do comment based rule skips for modules, so they must be specific in the `.pre-commit-config.yaml` file otherwise it will always fail
+  Terrascan can't do comment based rule skips for modules, so they must be specific in the `.config/terrascan.yaml` file otherwise it will always fail.
+  Several config options have to be specified in the `.pre-commit-config.yaml` as they can't be specified in the terrascan config file due to a lack of support.
 
   ### Terraform validate
   
@@ -81,7 +87,7 @@ content: |-
   The way that this repo is structured is supposed to be an infrastructure starter, as well as a base psuedo code repo.
   Each file is generally self contained except where it can't be. All variables are in `variables.tf`, all data is in `data.tf`, and etc.
 
-  ### `client_vpn.tf`
+  ### `billing-alerts.tf`
   
   ### `data.tf`
   This data file contains all references for data providers, these are fairly generic.
@@ -114,6 +120,40 @@ content: |-
 
   ### `versions.tf`
   This file contains the required Terraform versions, as well as the required providers and their versions.
+
+  ## Documentation of Misc Config Files
+
+  This section is supposed to outline what the misc configuration files do and what is there purpose
+
+  ### `.config/.terraform-docs.yml`
+  This file auto generates your `README.md` file.
+
+  ### `.config/terrascan.yaml`
+  This file has all of the configuration options required for Terrascan, this is where you would skip rules to.
+
+  ### `.github/sync-repo-settings.yaml`
+  This file is our standard for how GitHub branch protection rules should be setup.
+
+  ### `.github/workflows/pre-commit.yml`
+  This file contains the instructions for Github workflows, in specific this file run pre-commit and will allow the PR to pass or fail. This is a safety check and extras for if pre-commit isn't run locally.
+
+  ### `.vscode/settings.json`
+  This file is a vscode workspace settings file.
+
+  ### `.gitignore`
+  This is your gitignore, and contains a slew of default standards.
+
+  ### `.pre-commit-config.yaml`
+  This file is the GIT pre-commit file and contains all of it's configuration options
+
+  ### `.prettierignore`
+  This file is the ignore file for the prettier pre-commit actions. Specific files like our SOPS config files have to be ignored.
+
+  ### `.terraform.lock.hcl`
+  This file contains the hashes of the Terraform providers and modules we're using.
+
+  ### `.tflint.hcl`
+  This file contains the plugin data for TFLint to run.
 
   ---
 
