@@ -1,6 +1,6 @@
 module "aws_anomaly_detection_alerts" {
-  source     = "https://github.com/StratusGrid/terraform-aws-anomaly-detection-alerts"
-  version    = "1.0.0"
+  source     = "StratusGrid/anomaly-detection-alerts/aws"
+  version    = "~> 2.0.0"
   name       = "${var.name_prefix}-anomaly-detection-alerts${local.name_suffix}"
   input_tags = merge(local.common_tags, {})
 
