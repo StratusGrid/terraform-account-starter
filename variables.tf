@@ -54,18 +54,20 @@ variable "aws_sso_enabled" {
   default     = true
 }
 
-variable "monthly_billing_threshold" {
-  description = "The maximum amount that can be billed after which a cloudwatch alarm triggers"
+variable "cost_anomaly_billing_threshold" {
+  description = "The amount over the normal billing threshold before alerting"
   type        = string
-  default     = "10000"
-}
-
-variable "currency" {
-  description = "This defines the currency in the monthly_billing_threshold"
-  type        = string
-  default     = "USD"
+  default     = "50"
 }
 
 variable "payer_account" {
-  description = "A boolean true/false for if this is the payer"
+  description = "A boolean true/false for if this is the payer, as this will control billing alerts"
+  type        = string
+  default     = false
+}
+
+variable "cost_anomaly_subscription_email" {
+  description = "The subscription email for AWS Cost Anomly Billing Alerts"
+  type        = string
+  default     = "distributionlist@example.com"
 }

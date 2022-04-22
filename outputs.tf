@@ -50,17 +50,17 @@ output "terraform_state_config_s3_key" {
 
 output "iam_role_url_restricted_admin" {
   description = "URL to assume restricted admin role in this account"
-  value       = module.restricted_admin.role_assumption_url
+  value       = var.aws_sso_enabled == false ? module.restricted_admin.role_assumption_url : null
 }
 
 output "iam_role_url_restricted_read_only" {
   description = "URL to assume restricted read only role in this account"
-  value       = module.restricted_read_only.role_assumption_url
+  value       = var.aws_sso_enabled == false ? module.restricted_read_only.role_assumption_url : null
 }
 
 output "iam_role_url_restricted_approver" {
   description = "URL to assume restricted approver role in this account"
-  value       = module.restricted_approver.role_assumption_url
+  value       = var.aws_sso_enabled == false ? module.restricted_approver.role_assumption_url : null
 }
 
 output "sops_kms_id" {
