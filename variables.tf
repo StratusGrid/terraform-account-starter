@@ -71,3 +71,9 @@ variable "cost_anomaly_subscription_email" {
   type        = string
   default     = "distributionlist@example.com"
 }
+
+variable "service_limit_email" {
+  description = "The subscription email for AWS Service Limits"
+  type        = string
+  default     = "distributionlist@example.com"
+}
