@@ -8,5 +8,5 @@ module "restricted_admin" {
   principal_arns = distinct(flatten(["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root", var.trusted_users_account_arns]))
   policy_arns    = [aws_iam_policy.restricted_admin.arn]
   require_mfa    = false
-  input_tags     = merge(local.common_tags, {})
+  input_tags     = merge() # This is blank for module compatability, we feed it null tags as our provider level will take over
 }

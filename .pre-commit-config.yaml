@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.63.0 # v.1.63.0 and above require bash 5 from brew
+    rev: v1.68.1 # v.1.63.0 and above require bash 5 from brew
     hooks:
       - id: terraform_fmt
       - id: terraform_validate

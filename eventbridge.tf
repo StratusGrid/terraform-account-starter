@@ -31,6 +31,8 @@ resource "aws_cloudwatch_event_rule" "required_tags" {
 }
 
 resource "aws_cloudwatch_event_target" "aws_backup_to_sns" {
+  count = var.control_tower_enabled == false ? 1 : 0
+
   arn            = aws_sns_topic.infrastructure_alerts.arn
   event_bus_name = "default"
   rule           = aws_cloudwatch_event_rule.required_tags[0].name
