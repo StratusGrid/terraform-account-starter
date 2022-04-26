@@ -44,7 +44,7 @@ aws ecs put-account-setting-default --name containerInsights --value enabled --r
 
 This repo has several base requirements
 - This repo is based upon the AWS `~> 4.9.0` provider
-- The following packages are installed via brew: `tflint`, `terrascan`, `terraform-docs`, `gitleaks`, `tfsec`, `pre-commit', 'sops`, `coreutils`
+- The following packages are installed via brew: `tflint`, `terrascan`, `terraform-docs`, `gitleaks`, `tfsec`, `pre-commit', 'sops`, `go`
 - This assumes SOPs v3.7.2
 - Install `bash` through Brew for Bash 5.0, otherwise it will fail with the error that looks like `declare: -g: invalid option`
 - If you need more tflint plugins, please edit the `.tflint.hcl` file with the instructions from [here](https://github.com/terraform-linters/tflint)
@@ -182,13 +182,14 @@ This file contains the plugin data for TFLint to run.
 | <a name="input_aws_sso_enabled"></a> [aws\_sso\_enabled](#input\_aws\_sso\_enabled) | A boolean true/false for if Control Tower is deployed or will be deployed. By default this is true, and setting to true removes functions that are replaced by AWS SSO | `bool` | `true` | no |
 | <a name="input_control_tower_enabled"></a> [control\_tower\_enabled](#input\_control\_tower\_enabled) | A boolean true/false for if Control Tower is deployed or will be deployed. By default this is true, and setting to true removes functions that are imcompatible with Control Tower defaults/common guardrails | `bool` | `true` | no |
 | <a name="input_cost_anomaly_billing_threshold"></a> [cost\_anomaly\_billing\_threshold](#input\_cost\_anomaly\_billing\_threshold) | The amount over the normal billing threshold before alerting | `string` | `"50"` | no |
-| <a name="input_cost_anomaly_subscription_email"></a> [cost\_anomaly\_subscription\_email](#input\_cost\_anomaly\_subscription\_email) | The subscription email for AWS Cost Anomly Billing Alerts | `string` | `"distributionlist@example.com"` | no |
+| <a name="input_cost_anomaly_subscription_email"></a> [cost\_anomaly\_subscription\_email](#input\_cost\_anomaly\_subscription\_email) | The subscription email for AWS Cost Anomly Billing Alerts | `string` | n/a | yes |
 | <a name="input_env_name"></a> [env\_name](#input\_env\_name) | Environment name string to be used for decisions and name generation. Appended to name\_suffix to create full\_suffix | `string` | n/a | yes |
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | String to use as prefix on object names | `string` | n/a | yes |
 | <a name="input_override_name_suffix"></a> [override\_name\_suffix](#input\_override\_name\_suffix) | String to completely override the name\_suffix | `string` | `""` | no |
 | <a name="input_payer_account"></a> [payer\_account](#input\_payer\_account) | A boolean true/false for if this is the payer, as this will control billing alerts | `string` | `false` | no |
 | <a name="input_prepend_name_suffix"></a> [prepend\_name\_suffix](#input\_prepend\_name\_suffix) | String to prepend to the name\_suffix used on object names. This is optional, so start with dash if using like so: -mysuffix. This will result in prefix-objectname-mysuffix-env | `string` | `""` | no |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region to target | `string` | n/a | yes |
+| <a name="input_service_limit_email"></a> [service\_limit\_email](#input\_service\_limit\_email) | The subscription email for AWS Service Limits | `string` | n/a | yes |
 | <a name="input_source_repo"></a> [source\_repo](#input\_source\_repo) | URL of the repo which holds this code | `string` | n/a | yes |
 | <a name="input_trusted_users_account_arns"></a> [trusted\_users\_account\_arns](#input\_trusted\_users\_account\_arns) | Account which users are provisioned in and should be granted access to cross account roles. Enter like arn:aws:iam::123456789012:root | `list(string)` | `[]` | no |
 
