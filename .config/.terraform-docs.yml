@@ -18,14 +18,12 @@ content: |-
   - Enable IAM Billing access while logged in as root under My Account
   - Delete the default VPCs in all regions you will be using (at least all regions with config rules...)
   - Tag the default RDS DB Security Groups in all regions with your required tags (cli to do so is below)
+  - Determine if you're enabling centralized logging
 
   ```bash
   aws rds add-tags-to-resource --resource-name "arn:aws:rds:us-east-1:<account_number>:secgrp:default" --tags "[{\"Key\": \"Environment\",\"Value\": \"<env>\"},{\"Key\": \"Customer\",\"Value\": \"Shared\"}]" --region us-east-1
-
   aws rds add-tags-to-resource --resource-name "arn:aws:rds:us-east-2:<account_number>:secgrp:default" --tags "[{\"Key\": \"Environment\",\"Value\": \"<env>\"},{\"Key\": \"Customer\",\"Value\": \"Shared\"}]" --region us-east-2
-
   aws rds add-tags-to-resource --resource-name "arn:aws:rds:us-west-1:<account_number>:secgrp:default" --tags "[{\"Key\": \"Environment\",\"Value\": \"<env>\"},{\"Key\": \"Customer\",\"Value\": \"Shared\"}]" --region us-west-1
-
   aws rds add-tags-to-resource --resource-name "arn:aws:rds:us-west-2:<account_number>:secgrp:default" --tags "[{\"Key\": \"Environment\",\"Value\": \"<env>\"},{\"Key\": \"Customer\",\"Value\": \"Shared\"}]" --region us-west-2
   ```
 
@@ -38,6 +36,22 @@ content: |-
   aws ecs put-account-setting-default --name containerInsights --value enabled --region us-east-1
   ```
 
+  ## Centralized Logging
+
+  This repo is fully configured to allow for centralized logging with S3 and it's controlled via a few variables. To enable centralized logging set the following variables `log_archive_retention`, `aws_org_id`, `s3_destination_bucket_name`, `logging_account_id` to their required values and uncomment this block in `s3-bucket-logging.tf`.
+  If the apply file you're doing is for the log archive account these vars should be modified `enable_centralized_logging`, `log_archive_account` in addition to the prior variables with the proper values set.
+
+  # SNS Topics
+
+  Once the repo is applied, please go to SNS in the correct region (Most likely us-east-1) and set the appropriate subscriptions for InfraStructure Alerts and Billing Alerts.
+
+  ```hcl
+  enable_centralized_logging = true
+  s3_destination_bucket_name = var.s3_destination_bucket_name
+  iam_role_s3_replication_arn = module.iam_role_s3[0].iam_role_arn
+  logging_account_id = var.logging_account_id
+  ```
+
   ## StratusGrid Standards we assume
 
   - All resource names and name tags shall use `_` and not `-`s
@@ -47,7 +61,7 @@ content: |-
   - StratusGrid generally follows the TerraForm standards outlined [here](https://www.terraform-best-practices.com/naming)
 
   ## Repo Knowledge
-
+  
   This repo has several base requirements
   - This repo is based upon the AWS `~> 4.9.0` provider
   - The following packages are installed via brew: `tflint`, `terrascan`, `terraform-docs`, `gitleaks`, `tfsec`, `pre-commit', 'sops`, `go`
@@ -88,10 +102,47 @@ content: |-
   Each file is generally self contained except where it can't be. All variables are in `variables.tf`, all data is in `data.tf`, and etc.
 
   ### `billing-alerts.tf`
+  This file contains the SG module for billing alert anomalies
+
+  ### `config-recorder.tf1
+  This file contains the SG module for configuring AWS Config Recorder, this is only enabled if `control_tower_enabled == false`.
+  
+  ### `config-rules.tf`
+  This file contains the SG module for configuring AWS Config, this is only enabled if `control_tower_enabled == false`.
   
   ### `data.tf`
   This data file contains all references for data providers, these are fairly generic.
+  
+  ### `ec2-default-instance-profile.tf`
+  The file contains the SG module for building our EC2 Instance IAM Role that enables SSM, and CloudWatch Publishing.
+  
+  ### `eventbridge.tf`
+  This file contains the event bridge rule for if ECS, RDS, EC@, Backups, or DynamoDB don't meed the required tagging, this is only enabled if `control_tower_enabled == false`.
 
+  ### `iam-cross-account-trust-maps.tf`
+  This file contains the SG module for configuring IAM for cross account trusts, this is only enabled if `aws_sso_enabled == false` except for the IAM self service module.
+  
+  ### `iam-password-policy.tf`
+  This file contains the resource for the IAM local users
+
+  ### `iam-policy-restricted-admin.tf`
+  This file contains the SG module for configuring the IAM restricted-admin-role role, this is only enabled if `aws_sso_enabled == false`.
+  
+  ### `iam-policy-restricted-approver.tf`
+  This file contains the SG module for configuring the IAM cross-account-role-admin role, this is only enabled if `aws_sso_enabled == false`.
+  
+  ### `iam-policy-restricted-read-only.tf`
+  This file contains the SG module for configuring the IAM restricted-read-role role, this is only enabled if `aws_sso_enabled == false`.
+  
+  ### `iam-s3-replication.tf`
+  This file contains the IAM policy for centralized logging, this is only enabled if `log_archive_account == true && enable_centralized_logging == true`.
+  
+  ### `lambda-cloudwatch-cpu-creditbalance-alerts.tf`
+  This file contains the SG module for CloudWatch to fire an alert to SNS whenever the CPU credit balance runs low.
+  
+  ### `lambda-cloudwatch-ebs-burstbalance-alerts.tf`
+  This file contains the SG module for CloudWatch to fire an alert to SNS whenever the Burst Balance credit balance runs low.
+  
   ### `LICENSE`
   This is the standard Apache 2.0 License as defined [here](https://stratusgrid.atlassian.net/wiki/spaces/TK/pages/2121728017/StratusGrid+Terraform+Module+Requirements).
 
@@ -104,8 +155,32 @@ content: |-
   ### `provider.tf`
   This file contains the necessary provider(s) and there configurations.
 
+  ### `README_SOPS.md`
+  This is the readme file for SOPS and how
+
   ### `README.md`
   It's` this file! I'm always updated via TF Docs!
+
+  ### `s3-bucket-cloudtrail.tf`
+  This contains the SG module for setting up a cloudtrail to an S3 Bucket and an SNS Topic.
+
+  ### `s3-bucket-logging.tf`
+  This contains the SG module for setting up a logging bucket, it's replicated once for each US based region. This file needs to have parts uncommented if using centralized logging.
+
+  ### `s3-bucket-terraform-state.tf`
+  This contains the SG module for setting up our TF centralized remote state S3 bucket and KMS Key.
+
+  ### `s3-centralized-logging.tf`
+  This contains all of the S3 related components for centralized logging.
+
+  ### `service-limits.tf`
+  This contains the SG module for sending service limits to an SNS Topic or to Slack.
+
+  ### `sns-topics.tf`
+  This contains the SNS topic for all Infrastructure Alerts.
+
+  ### `sops.tf`
+  This file creates all of the required SOPS configuration KMS info for other repos to build off of.
 
   ### `state.tfnot`
   The StratusGrid standard for Terraform remote state management.
@@ -220,7 +295,7 @@ content: |-
 
   ## Contributors
   - Chris Hurst [StratusChris](https://github.com/StratusChris)
-  - Ivan Casco [SGTyler](https://github.com/ivan.casco-sg)
+  - Ivan Casco [ivancasco-sg](https://github.com/ivancasco-sg)
   - Tyler Martin [SGTyler](https://github.com/SGTyler)
   - Wesley Kirkland [wesleykirklandsg](https://github.com/wesleykirklandsg)
 

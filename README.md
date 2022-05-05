@@ -12,14 +12,12 @@ It will initiate a fully configured AWS account with config and logging set up i
 - Enable IAM Billing access while logged in as root under My Account
 - Delete the default VPCs in all regions you will be using (at least all regions with config rules...)
 - Tag the default RDS DB Security Groups in all regions with your required tags (cli to do so is below)
+- Determine if you're enabling centralized logging
 
 ```bash
 aws rds add-tags-to-resource --resource-name "arn:aws:rds:us-east-1:<account_number>:secgrp:default" --tags "[{\"Key\": \"Environment\",\"Value\": \"<env>\"},{\"Key\": \"Customer\",\"Value\": \"Shared\"}]" --region us-east-1
-
 aws rds add-tags-to-resource --resource-name "arn:aws:rds:us-east-2:<account_number>:secgrp:default" --tags "[{\"Key\": \"Environment\",\"Value\": \"<env>\"},{\"Key\": \"Customer\",\"Value\": \"Shared\"}]" --region us-east-2
-
 aws rds add-tags-to-resource --resource-name "arn:aws:rds:us-west-1:<account_number>:secgrp:default" --tags "[{\"Key\": \"Environment\",\"Value\": \"<env>\"},{\"Key\": \"Customer\",\"Value\": \"Shared\"}]" --region us-west-1
-
 aws rds add-tags-to-resource --resource-name "arn:aws:rds:us-west-2:<account_number>:secgrp:default" --tags "[{\"Key\": \"Environment\",\"Value\": \"<env>\"},{\"Key\": \"Customer\",\"Value\": \"Shared\"}]" --region us-west-2
 ```
 
@@ -30,6 +28,22 @@ aws ecs put-account-setting-default --name taskLongArnFormat --value enabled --r
 aws ecs put-account-setting-default --name containerInstanceLongArnFormat --value enabled --region us-east-1
 aws ecs put-account-setting-default --name awsvpcTrunking --value enabled --region us-east-1
 aws ecs put-account-setting-default --name containerInsights --value enabled --region us-east-1
+```
+
+## Centralized Logging
+
+This repo is fully configured to allow for centralized logging with S3 and it's controlled via a few variables. To enable centralized logging set the following variables `log_archive_retention`, `aws_org_id`, `s3_destination_bucket_name`, `logging_account_id` to their required values and uncomment this block in `s3-bucket-logging.tf`.
+If the apply file you're doing is for the log archive account these vars should be modified `enable_centralized_logging`, `log_archive_account` in addition to the prior variables with the proper values set.
+
+# SNS Topics
+
+Once the repo is applied, please go to SNS in the correct region (Most likely us-east-1) and set the appropriate subscriptions for InfraStructure Alerts and Billing Alerts.
+
+```hcl
+enable_centralized_logging = true
+s3_destination_bucket_name = var.s3_destination_bucket_name
+iam_role_s3_replication_arn = module.iam_role_s3[0].iam_role_arn
+logging_account_id = var.logging_account_id
 ```
 
 ## StratusGrid Standards we assume
@@ -82,9 +96,46 @@ The way that this repo is structured is supposed to be an infrastructure starter
 Each file is generally self contained except where it can't be. All variables are in `variables.tf`, all data is in `data.tf`, and etc.
 
 ### `billing-alerts.tf`
+This file contains the SG module for billing alert anomalies
+
+### `config-recorder.tf1
+This file contains the SG module for configuring AWS Config Recorder, this is only enabled if `control_tower_enabled == false`.
+
+### `config-rules.tf`
+This file contains the SG module for configuring AWS Config, this is only enabled if `control_tower_enabled == false`.
 
 ### `data.tf`
 This data file contains all references for data providers, these are fairly generic.
+
+### `ec2-default-instance-profile.tf`
+The file contains the SG module for building our EC2 Instance IAM Role that enables SSM, and CloudWatch Publishing.
+
+### `eventbridge.tf`
+This file contains the event bridge rule for if ECS, RDS, EC@, Backups, or DynamoDB don't meed the required tagging, this is only enabled if `control_tower_enabled == false`.
+
+### `iam-cross-account-trust-maps.tf`
+This file contains the SG module for configuring IAM for cross account trusts, this is only enabled if `aws_sso_enabled == false` except for the IAM self service module.
+
+### `iam-password-policy.tf`
+This file contains the resource for the IAM local users
+
+### `iam-policy-restricted-admin.tf`
+This file contains the SG module for configuring the IAM restricted-admin-role role, this is only enabled if `aws_sso_enabled == false`.
+
+### `iam-policy-restricted-approver.tf`
+This file contains the SG module for configuring the IAM cross-account-role-admin role, this is only enabled if `aws_sso_enabled == false`.
+
+### `iam-policy-restricted-read-only.tf`
+This file contains the SG module for configuring the IAM restricted-read-role role, this is only enabled if `aws_sso_enabled == false`.
+
+### `iam-s3-replication.tf`
+This file contains the IAM policy for centralized logging, this is only enabled if `log_archive_account == true && enable_centralized_logging == true`.
+
+### `lambda-cloudwatch-cpu-creditbalance-alerts.tf`
+This file contains the SG module for CloudWatch to fire an alert to SNS whenever the CPU credit balance runs low.
+
+### `lambda-cloudwatch-ebs-burstbalance-alerts.tf`
+This file contains the SG module for CloudWatch to fire an alert to SNS whenever the Burst Balance credit balance runs low.
 
 ### `LICENSE`
 This is the standard Apache 2.0 License as defined [here](https://stratusgrid.atlassian.net/wiki/spaces/TK/pages/2121728017/StratusGrid+Terraform+Module+Requirements).
@@ -98,8 +149,32 @@ The StratusGrid standard for Terraform Outputs.
 ### `provider.tf`
 This file contains the necessary provider(s) and there configurations.
 
+### `README_SOPS.md`
+This is the readme file for SOPS and how
+
 ### `README.md`
 It's` this file! I'm always updated via TF Docs!
+
+### `s3-bucket-cloudtrail.tf`
+This contains the SG module for setting up a cloudtrail to an S3 Bucket and an SNS Topic.
+
+### `s3-bucket-logging.tf`
+This contains the SG module for setting up a logging bucket, it's replicated once for each US based region. This file needs to have parts uncommented if using centralized logging.
+
+### `s3-bucket-terraform-state.tf`
+This contains the SG module for setting up our TF centralized remote state S3 bucket and KMS Key.
+
+### `s3-centralized-logging.tf`
+This contains all of the S3 related components for centralized logging.
+
+### `service-limits.tf`
+This contains the SG module for sending service limits to an SNS Topic or to Slack.
+
+### `sns-topics.tf`
+This contains the SNS topic for all Infrastructure Alerts.
+
+### `sops.tf`
+This file creates all of the required SOPS configuration KMS info for other repos to build off of.
 
 ### `state.tfnot`
 The StratusGrid standard for Terraform remote state management.
@@ -168,10 +243,18 @@ This file contains the plugin data for TFLint to run.
 | [aws_iam_policy.approver_restrictions](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.read_only_restrictions](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.restricted_admin](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.s3_role_assumption](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_kms_alias.sns_topics](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
 | [aws_kms_alias.sops](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
 | [aws_kms_key.sns_topics](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
 | [aws_kms_key.sops](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
+| [aws_s3_bucket.central_logging](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
+| [aws_s3_bucket_acl.central_logging](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_acl) | resource |
+| [aws_s3_bucket_lifecycle_configuration.central_logging](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_lifecycle_configuration) | resource |
+| [aws_s3_bucket_policy.central_logging](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
+| [aws_s3_bucket_public_access_block.central_logging](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
+| [aws_s3_bucket_server_side_encryption_configuration.central_logging](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
+| [aws_s3_bucket_versioning.central_logging](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_versioning) | resource |
 | [aws_sns_topic.infrastructure_alerts](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic) | resource |
 
 ## Inputs
@@ -179,16 +262,22 @@ This file contains the plugin data for TFLint to run.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_append_name_suffix"></a> [append\_name\_suffix](#input\_append\_name\_suffix) | String to append to the name\_suffix used on object names. This is optional, so start with dash if using like so: -mysuffix. This will result in prefix-objectname-env-mysuffix | `string` | `""` | no |
+| <a name="input_aws_org_id"></a> [aws\_org\_id](#input\_aws\_org\_id) | AWS Org ID | `string` | n/a | yes |
 | <a name="input_aws_sso_enabled"></a> [aws\_sso\_enabled](#input\_aws\_sso\_enabled) | A boolean true/false for if Control Tower is deployed or will be deployed. By default this is true, and setting to true removes functions that are replaced by AWS SSO | `bool` | `true` | no |
 | <a name="input_control_tower_enabled"></a> [control\_tower\_enabled](#input\_control\_tower\_enabled) | A boolean true/false for if Control Tower is deployed or will be deployed. By default this is true, and setting to true removes functions that are imcompatible with Control Tower defaults/common guardrails | `bool` | `true` | no |
 | <a name="input_cost_anomaly_billing_threshold"></a> [cost\_anomaly\_billing\_threshold](#input\_cost\_anomaly\_billing\_threshold) | The amount over the normal billing threshold before alerting | `string` | `"50"` | no |
 | <a name="input_cost_anomaly_subscription_email"></a> [cost\_anomaly\_subscription\_email](#input\_cost\_anomaly\_subscription\_email) | The subscription email for AWS Cost Anomly Billing Alerts | `string` | n/a | yes |
+| <a name="input_enable_centralized_logging"></a> [enable\_centralized\_logging](#input\_enable\_centralized\_logging) | A boolean true/false to enable centralized logging to a log archive account | `bool` | n/a | yes |
 | <a name="input_env_name"></a> [env\_name](#input\_env\_name) | Environment name string to be used for decisions and name generation. Appended to name\_suffix to create full\_suffix | `string` | n/a | yes |
+| <a name="input_log_archive_account"></a> [log\_archive\_account](#input\_log\_archive\_account) | A boolean true/false for is this is the log archive account in the AWS Organization, as this will control centralized logging | `bool` | n/a | yes |
+| <a name="input_log_archive_retention"></a> [log\_archive\_retention](#input\_log\_archive\_retention) | How many days to delete centralized logs | `number` | `365` | no |
+| <a name="input_logging_account_id"></a> [logging\_account\_id](#input\_logging\_account\_id) | Centralized Logging Account ID | `string` | n/a | yes |
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | String to use as prefix on object names | `string` | n/a | yes |
 | <a name="input_override_name_suffix"></a> [override\_name\_suffix](#input\_override\_name\_suffix) | String to completely override the name\_suffix | `string` | `""` | no |
 | <a name="input_payer_account"></a> [payer\_account](#input\_payer\_account) | A boolean true/false for if this is the payer, as this will control billing alerts | `string` | `false` | no |
 | <a name="input_prepend_name_suffix"></a> [prepend\_name\_suffix](#input\_prepend\_name\_suffix) | String to prepend to the name\_suffix used on object names. This is optional, so start with dash if using like so: -mysuffix. This will result in prefix-objectname-mysuffix-env | `string` | `""` | no |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region to target | `string` | n/a | yes |
+| <a name="input_s3_destination_bucket_name"></a> [s3\_destination\_bucket\_name](#input\_s3\_destination\_bucket\_name) | Destination Bucket Name for S3 Centralized Logging Replication | `string` | `""` | no |
 | <a name="input_service_limit_email"></a> [service\_limit\_email](#input\_service\_limit\_email) | The subscription email for AWS Service Limits | `string` | n/a | yes |
 | <a name="input_source_repo"></a> [source\_repo](#input\_source\_repo) | URL of the repo which holds this code | `string` | n/a | yes |
 | <a name="input_trusted_users_account_arns"></a> [trusted\_users\_account\_arns](#input\_trusted\_users\_account\_arns) | Account which users are provisioned in and should be granted access to cross account roles. Enter like arn:aws:iam::123456789012:root | `list(string)` | `[]` | no |
@@ -267,7 +356,7 @@ folders.
 
 ## Contributors
 - Chris Hurst [StratusChris](https://github.com/StratusChris)
-- Ivan Casco [SGTyler](https://github.com/ivan.casco-sg)
+- Ivan Casco [ivancasco-sg](https://github.com/ivancasco-sg)
 - Tyler Martin [SGTyler](https://github.com/SGTyler)
 - Wesley Kirkland [wesleykirklandsg](https://github.com/wesleykirklandsg)
 
