@@ -271,7 +271,7 @@ This file contains the plugin data for TFLint to run.
 | <a name="input_env_name"></a> [env\_name](#input\_env\_name) | Environment name string to be used for decisions and name generation. Appended to name\_suffix to create full\_suffix | `string` | n/a | yes |
 | <a name="input_log_archive_account"></a> [log\_archive\_account](#input\_log\_archive\_account) | A boolean true/false for is this is the log archive account in the AWS Organization, as this will control centralized logging | `bool` | n/a | yes |
 | <a name="input_log_archive_retention"></a> [log\_archive\_retention](#input\_log\_archive\_retention) | How many days to delete centralized logs | `number` | `365` | no |
-| <a name="input_logging_account_id"></a> [logging\_account\_id](#input\_logging\_account\_id) | Centralized Logging Account ID | `string` | n/a | yes |
+| <a name="input_logging_account_id"></a> [logging\_account\_id](#input\_logging\_account\_id) | Centralized Logging Account ID, This will only ever be used when enabling centralized logging | `string` | n/a | yes |
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | String to use as prefix on object names | `string` | n/a | yes |
 | <a name="input_override_name_suffix"></a> [override\_name\_suffix](#input\_override\_name\_suffix) | String to completely override the name\_suffix | `string` | `""` | no |
 | <a name="input_payer_account"></a> [payer\_account](#input\_payer\_account) | A boolean true/false for if this is the payer, as this will control billing alerts | `string` | `false` | no |

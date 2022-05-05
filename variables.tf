@@ -75,3 +75,38 @@ variable "service_limit_email" {
   description = "The subscription email for AWS Service Limits"
   type        = string
 }
+
+variable "enable_centralized_logging" {
+  description = "A boolean true/false to enable centralized logging to a log archive account"
+  type        = bool
+}
+
+variable "log_archive_account" {
+  # tflint-ignore: terraform_unused_declarations
+  description = "A boolean true/false for is this is the log archive account in the AWS Organization, as this will control centralized logging"
+  # tflint-ignore: terraform_unused_declarations
+  type = bool
+}
+
+variable "log_archive_retention" {
+  description = "How many days to delete centralized logs"
+  type        = number
+  default     = 365
+}
+
+variable "aws_org_id" {
+  description = "AWS Org ID"
+  type        = string
+}
+
+variable "s3_destination_bucket_name" {
+  description = "Destination Bucket Name for S3 Centralized Logging Replication"
+  type        = string
+  default     = ""
+}
+
+# tflint-ignore: terraform_unused_declarations
+variable "logging_account_id" {
+  description = "Centralized Logging Account ID, This will only ever be used when enabling centralized logging"
+  type        = string
+}
