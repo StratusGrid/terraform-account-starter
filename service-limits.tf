@@ -14,10 +14,10 @@ resource "aws_ssm_parameter" "slack_channel_key" {
 } */
 
 module "aws_limits" {
-  source = "github.com/StratusGrid/terraform-aws-limits-monitor.git?ref=dev"
-  #version = "1.0.1"
+  source  = "StratusGrid/limits-monitor/aws"
+  version = "1.0.2"
 
-  input_tags = merge(local.common_tags, {}) # Module input tags
+  input_tags = merge() # Module input tags
 
   email = var.service_limit_email
 }
