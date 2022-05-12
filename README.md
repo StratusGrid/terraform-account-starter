@@ -3,7 +3,7 @@
 
 GitHub: [StratusGrid/terraform-account-starter](https://github.com/StratusGrid/terraform-account-starter)
 
-This is to showcase the use of many of the StratusGrid modules working together using terraform version 0.12.
+This is to showcase the use of many of the StratusGrid modules working together using terraform.
 
 It will initiate a fully configured AWS account with config and logging set up in all 4 US regions, with terraform state and cloudtrail in us-east-1
 
@@ -13,8 +13,10 @@ It will initiate a fully configured AWS account with config and logging set up i
 - Delete the default VPCs in all regions you will be using (at least all regions with config rules...)
 - Tag the default RDS DB Security Groups in all regions with your required tags (cli to do so is below)
 - Determine if you're enabling centralized logging
+- Block S3 Public Access Account Wide - See [here](https://s3.console.aws.amazon.com/s3/settings?region=us-east-1)
 
 ```bash
+# If multiple environments share an account don't do this, or pick a single env
 aws rds add-tags-to-resource --resource-name "arn:aws:rds:us-east-1:<account_number>:secgrp:default" --tags "[{\"Key\": \"Environment\",\"Value\": \"<env>\"},{\"Key\": \"Customer\",\"Value\": \"Shared\"}]" --region us-east-1
 aws rds add-tags-to-resource --resource-name "arn:aws:rds:us-east-2:<account_number>:secgrp:default" --tags "[{\"Key\": \"Environment\",\"Value\": \"<env>\"},{\"Key\": \"Customer\",\"Value\": \"Shared\"}]" --region us-east-2
 aws rds add-tags-to-resource --resource-name "arn:aws:rds:us-west-1:<account_number>:secgrp:default" --tags "[{\"Key\": \"Environment\",\"Value\": \"<env>\"},{\"Key\": \"Customer\",\"Value\": \"Shared\"}]" --region us-west-1
@@ -32,7 +34,7 @@ aws ecs put-account-setting-default --name containerInsights --value enabled --r
 
 ## Centralized Logging
 
-This repo is fully configured to allow for centralized logging with S3 and it's controlled via a few variables. To enable centralized logging set the following variables `log_archive_retention`, `aws_org_id`, `s3_destination_bucket_name`, `logging_account_id` to their required values and uncomment this block in `s3-bucket-logging.tf`.
+This repo is fully configured to allow for centralized logging with S3 and it's controlled via a few variables. To enable centralized logging set the following variables `log_archive_retention`, `aws_org_id`, `s3_destination_bucket_name`, `logging_account_id` to the required values and uncomment this block in `s3-bucket-logging.tf`.
 If the apply file you're doing is for the log archive account these vars should be modified `enable_centralized_logging`, `log_archive_account` in addition to the prior variables with the proper values set.
 
 # SNS Topics
@@ -60,7 +62,7 @@ This repo has several base requirements
 - This repo is based upon the AWS `~> 4.9.0` provider
 - The following packages are installed via brew: `tflint`, `terrascan`, `terraform-docs`, `gitleaks`, `tfsec`, `pre-commit', 'sops`, `go`
 - This assumes SOPs v3.7.2
-- Install `bash` through Brew for Bash 5.0, otherwise it will fail with the error that looks like `declare: -g: invalid option`
+- If you encounter an error like `declare: -g: invalid option` reference [this](https://github.com/antonbabenko/pre-commit-terraform/issues/337) and install Bash 5
 - If you need more tflint plugins, please edit the `.tflint.hcl` file with the instructions from [here](https://github.com/terraform-linters/tflint)
 - It's highly recommend that you follow the Git Pre-Commit Instructions below, these will run in GitHub though they should be ran locally to reduce issues
 - By default Terraform docs will always run so our auto generated docs are always up to date
