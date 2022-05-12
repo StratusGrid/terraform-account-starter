@@ -98,7 +98,7 @@ The way that this repo is structured is supposed to be an infrastructure starter
 Each file is generally self contained except where it can't be. All variables are in `variables.tf`, all data is in `data.tf`, and etc.
 
 ### `billing-alerts.tf`
-This file contains the SG module for billing alert anomalies
+This file contains the SG module for billing alert anomalies. If you wish to enable Slack Alerts please edit this file for the Slack SSM Parameters.
 
 ### `config-recorder.tf1
 This file contains the SG module for configuring AWS Config Recorder, this is only enabled if `control_tower_enabled == false`.
