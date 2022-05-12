@@ -1,7 +1,9 @@
 module "cloudtrail" {
   #ts:skip=AC_AWS_0207 SG_Sub_Module
-  source  = "StratusGrid/cloudtrail/aws"
-  version = "2.2.0"
+  /* source  = "StratusGrid/cloudtrail/aws"
+  version = "~> 3.0" */
+
+  source = "github.com/StratusGrid/terraform-aws-cloudtrail.git?ref=aws4.x"
 
   name_prefix = var.name_prefix
   name_suffix = local.name_suffix
