@@ -20,11 +20,11 @@ output "common_tags" {
 
 output "log_bucket_ids" {
   description = "ID of logging bucket"
-  value       = [
-  module.s3_bucket_logging_us_east_1.bucket_id,
-  module.s3_bucket_logging_us_east_2.bucket_id,
-  module.s3_bucket_logging_us_west_1.bucket_id,
-  module.s3_bucket_logging_us_west_2.bucket_id
+  value = [
+    module.s3_bucket_logging_us_east_1.bucket_id,
+    module.s3_bucket_logging_us_east_2.bucket_id,
+    module.s3_bucket_logging_us_west_1.bucket_id,
+    module.s3_bucket_logging_us_west_2.bucket_id
   ]
 }
 
@@ -50,15 +50,25 @@ output "terraform_state_config_s3_key" {
 
 output "iam_role_url_restricted_admin" {
   description = "URL to assume restricted admin role in this account"
-  value       = module.restricted_admin.role_assumption_url
+  value       = var.aws_sso_enabled == false ? module.restricted_admin.role_assumption_url : null
 }
 
 output "iam_role_url_restricted_read_only" {
   description = "URL to assume restricted read only role in this account"
-  value       = module.restricted_read_only.role_assumption_url
+  value       = var.aws_sso_enabled == false ? module.restricted_read_only.role_assumption_url : null
 }
 
 output "iam_role_url_restricted_approver" {
   description = "URL to assume restricted approver role in this account"
-  value       = module.restricted_approver.role_assumption_url
+  value       = var.aws_sso_enabled == false ? module.restricted_approver.role_assumption_url : null
+}
+
+output "sops_kms_id" {
+  description = "The KMS id you need to use for SOPs related files"
+  value       = aws_kms_alias.sops.arn
+}
+
+output "ec2_default_instance_arn" {
+  description = "The ec2 default instance IAM role that was created ARN"
+  value       = module.ec2_default_instance_profile.instance_profile_id
 }
