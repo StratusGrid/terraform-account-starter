@@ -3,7 +3,7 @@ provider "aws" {
   default_tags {
     tags = merge(
       local.common_tags,
-      { Region_Purpose = "Active" }
+      { Region_Purpose = "Active" } # The purpose of tag is to define the primary region, to more easily allow this template to be replicated to other regions
     )
   }
 }
@@ -14,8 +14,7 @@ provider "aws" {
   region = "us-east-1"
   default_tags {
     tags = merge(
-      local.common_tags,
-      { Region_Purpose = "Active" }
+      local.common_tags
     )
   }
 }
@@ -25,8 +24,7 @@ provider "aws" {
   region = "us-east-2"
   default_tags {
     tags = merge(
-      local.common_tags,
-      { Region_Purpose = "Active" }
+      local.common_tags
     )
   }
 }
@@ -36,8 +34,7 @@ provider "aws" {
   region = "us-west-1"
   default_tags {
     tags = merge(
-      local.common_tags,
-      { Region_Purpose = "Active" }
+      local.common_tags
     )
   }
 }
@@ -47,8 +44,7 @@ provider "aws" {
   region = "us-west-2"
   default_tags {
     tags = merge(
-      local.common_tags,
-      { Region_Purpose = "Active" }
+      local.common_tags
     )
   }
 }
