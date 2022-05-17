@@ -10,4 +10,3 @@ module "restricted_read_only" {
   require_mfa    = true
   input_tags     = merge() # This is blank for module compatability, we feed it null tags as our provider level will take over
 }
-

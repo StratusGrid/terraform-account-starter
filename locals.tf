@@ -2,4 +2,3 @@
 locals {
   name_suffix = coalesce(var.override_name_suffix, "${var.prepend_name_suffix}-${var.env_name}${var.append_name_suffix}")
 }
-

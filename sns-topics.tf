@@ -6,7 +6,7 @@ resource "aws_kms_key" "sns_topics" {
 
 # SNS Topic KMS Key
 resource "aws_kms_alias" "sns_topics" {
-  name          = "alias/${var.name_prefix}-sns_topics-default-key${local.name_suffix}"
+  name          = "alias/${var.name_prefix}-sns-topics-default-key${local.name_suffix}"
   target_key_id = aws_kms_key.sns_topics.key_id
 
   depends_on = [aws_kms_key.sns_topics]
