@@ -220,6 +220,9 @@ This file is the GIT pre-commit file and contains all of it's configuration opti
 ### `.prettierignore`
 This file is the ignore file for the prettier pre-commit actions. Specific files like our SOPS config files have to be ignored.
 
+### `.python-version`
+Specifies the Python version that the `actions/setup-python` in GitHub Actions should use.
+
 ### `.terraform.lock.hcl`
 This file contains the hashes of the Terraform providers and modules we're using.
 
