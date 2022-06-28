@@ -50,7 +50,7 @@ logging_account_id = var.logging_account_id
 
 ## StratusGrid Standards we assume
 
-- All resource names and name tags shall use `_` and not `-`s
+- All resource names shall use `_` and not `-`s
 - StratusGrid mostly follows the file names outlined [here](https://www.terraform-best-practices.com/code-structure), we use a `providers.tf` file for provider specific information.
 - StratusGrid mainly uses the AWS provider, and this provider supports provider level tagging. We use that whenever possible, some resources don't explicitly support it so tags need to be checked.
 - The old naming standard for common files such as inputs, outputs, providers, etc was to prefix them with a `-`, this is no longer true as it's not POSIX compliant. Our pre-commit hooks will fail with this old standard.
@@ -59,7 +59,7 @@ logging_account_id = var.logging_account_id
 ## Repo Knowledge
 
 This repo has several base requirements
-- This repo is based upon the AWS `~> 4.9.0` provider
+- This repo is based upon the AWS `~> 4.9` provider
 - The following packages are installed via brew: `tflint`, `terrascan`, `terraform-docs`, `gitleaks`, `tfsec`, `pre-commit', 'sops`, `go`
 - This assumes SOPs v3.7.2
 - If you encounter an error like `declare: -g: invalid option` reference [this](https://github.com/antonbabenko/pre-commit-terraform/issues/337) and install Bash 5
@@ -235,7 +235,7 @@ This file contains the plugin data for TFLint to run.
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.1.7 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.1 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.9 |
 
 ## Resources
