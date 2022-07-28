@@ -5,9 +5,6 @@
 *.tfstate
 *.tfstate.*
 
-# Lock File
-.terraform.lock.**
-
 # Mac Stuff
 .DS_Store
 
