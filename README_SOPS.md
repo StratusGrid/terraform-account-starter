@@ -20,7 +20,7 @@ terraform apply -var-file=./apply-tfvars/dev.tfvars
 
 2. Now that you have the KMS key deployed the output of `sops_kms_id` will give you the KMS Key Alias ARN, place this ARN into the `.sops.yaml` file in your other repos root.
 
-3. Now delete the `sops/secrets.dev.json` file and create it according to the naming standard of `secrets.${var.env_name}.json`, this will ensure the regex in the `.sops.yaml` file use the right KMS key.
+3. Now delete the `sops/secrets.dev.json` file and create it according to the naming standard of `secrets.${var.env_name}.json` with `sops ./sops/secrets.${var.env_name}.json`, this will ensure the regex in the `.sops.yaml` file use the right KMS key.
 
 4. <span style="color:red">Note</span>: If it's a new file erase the file contents by running `dd` on each line
 5. Enter in your secrets file, see the example below. Be sure to correctly indent your JSON.
