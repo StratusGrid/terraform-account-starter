@@ -12,13 +12,13 @@ The usage of SOPS requires a basic knowledge of `vi`.
 
 To properly configure and use SOPS, do the following
 
-1. This repo can not be applied without creating the KMS key for SOPS, doing a targeted apply such as below will allow you to generate the KMS key required
+1. Deploy this repo which will create the SOPs KMS Key
 
 ```bash
-terraform apply -var-file=./apply-tfvars/dev.tfvars -target aws_kms_alias.sops
+terraform apply -var-file=./apply-tfvars/dev.tfvars
 ```
 
-2. Now that you have the KMS key deployed the output of `sops_kms_id` will give you the KMS Key Alias ARN, place this ARN into the `.sops.yaml` file in the repo root.
+2. Now that you have the KMS key deployed the output of `sops_kms_id` will give you the KMS Key Alias ARN, place this ARN into the `.sops.yaml` file in your other repos root.
 
 3. Now delete the `sops/secrets.dev.json` file and create it according to the naming standard of `secrets.${var.env_name}.json`, this will ensure the regex in the `.sops.yaml` file use the right KMS key.
 
