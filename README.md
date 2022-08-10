@@ -70,7 +70,7 @@ This repo has several base requirements
 
 ### SOPs and Terraform
 
-See the [README_SOPs.md](README_SOPs.md) for how to use and configure SOPs. Hi
+See the [README_SOPs.md](README_SOPs.md) for how to use and configure SOPs.
 
 ### TFSec
 
