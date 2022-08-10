@@ -92,7 +92,7 @@ data "aws_iam_policy_document" "central_logging" {
     condition {
       test = "StringEquals"
       values = [
-        "${var.aws_org_id}"
+        var.aws_org_id
       ]
       variable = "aws:PrincipalOrgID"
     }
@@ -128,7 +128,7 @@ data "aws_iam_policy_document" "central_logging" {
     condition {
       test = "StringEquals"
       values = [
-        "${var.aws_org_id}"
+        var.aws_org_id
       ]
       variable = "aws:PrincipalOrgID"
     }
