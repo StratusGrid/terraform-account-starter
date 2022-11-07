@@ -1,4 +1,4 @@
-bucket         = "appname-remote-state-backend-envname"
-dynamodb_table = "appname-remote-state-backend-envname"
-key            = "client_account_starter.tfstate"
+bucket         = "APPNAME-remote-state-backend-ENV"
+dynamodb_table = "APPNAME-remote-state-backend-ENV"
+key            = "APPNAME-remote-state-backend-ENV.tfstate"
 kms_key_id     = ""
