@@ -14,7 +14,7 @@ module "iam_cross_account_trust_map_restricted_admin" {
   count = var.aws_sso_enabled == false ? 1 : 0
 
   source  = "StratusGrid/iam-cross-account-trust-maps/aws"
-  version = "2.0.1"
+  version = "2.1.0"
 
   trusting_role_arn   = module.restricted_admin[0].role_arn
   trusted_policy_name = module.iam_group_restricted_admin.group_name
@@ -37,7 +37,7 @@ module "iam_cross_account_trust_map_restricted_read_only" {
   count = var.aws_sso_enabled == false ? 1 : 0
 
   source  = "StratusGrid/iam-cross-account-trust-maps/aws"
-  version = "2.0.1"
+  version = "2.1.0"
 
   trusting_role_arn   = module.restricted_read_only[0].role_arn
   trusted_policy_name = module.iam_group_restricted_read_only.group_name
@@ -60,7 +60,7 @@ module "iam_cross_account_trust_map_restricted_approver" {
   count = var.aws_sso_enabled == false ? 1 : 0
 
   source  = "StratusGrid/iam-cross-account-trust-maps/aws"
-  version = "2.0.1"
+  version = "2.1.0"
 
   trusting_role_arn   = module.restricted_approver[0].role_arn
   trusted_policy_name = module.iam_group_restricted_approver[0].group_name
