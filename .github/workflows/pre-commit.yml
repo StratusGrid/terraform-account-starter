@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@e2f20e631ae6d7dd3b768f56a5d2af784dd54791 # v2
       - name: Terraform min/max versions
         id: minMax
-        uses: clowdhaus/terraform-min-max@0a0cf231c4897fbfa0567ebf2817af7bab58b07d # v1.0.6
+        uses: clowdhaus/terraform-min-max@24276ceb0f72d218182158f70afa55d1ccd0e4a8 # v1.2.0
     outputs:
       minVersion: ${{ steps.minMax.outputs.minVersion }}
       maxVersion: ${{ steps.minMax.outputs.maxVersion }}
