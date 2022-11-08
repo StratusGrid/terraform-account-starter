@@ -5,7 +5,7 @@
 
 module "iam_group_restricted_admin" {
   source  = "StratusGrid/iam-group-with-user-self-service/aws"
-  version = "2.0.0"
+  version = "2.1.0"
 
   name = "${var.name_prefix}-restricted-admin"
 }
@@ -28,7 +28,7 @@ module "iam_cross_account_trust_map_restricted_admin" {
 
 module "iam_group_restricted_read_only" {
   source  = "StratusGrid/iam-group-with-user-self-service/aws"
-  version = "2.0.0"
+  version = "2.1.0"
 
   name = "${var.name_prefix}-restricted-read-only"
 }
@@ -51,7 +51,7 @@ module "iam_cross_account_trust_map_restricted_read_only" {
 
 module "iam_group_restricted_approver" {
   source  = "StratusGrid/iam-group-with-user-self-service/aws"
-  version = "2.0.0"
+  version = "2.1.0"
 
   name = "${var.name_prefix}-restricted-approver"
 }
