@@ -48,7 +48,7 @@ module "iam_role_s3" {
   count = var.log_archive_account == true && var.enable_centralized_logging == true ? 1 : 0
 
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "~> 4.0"
+  version = "~> 5.0"
 
   trusted_role_services = ["s3.amazonaws.com"]
 
