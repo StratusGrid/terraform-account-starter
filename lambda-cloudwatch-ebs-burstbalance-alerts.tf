@@ -1,6 +1,6 @@
 module "ebs_burst_balance_lambda" {
   source  = "StratusGrid/lambda-event-handler-ebs-burstbalance/aws"
-  version = "2.1.0"
+  version = "2.2.0"
 
   name_prefix                 = var.name_prefix
   name_suffix                 = local.name_suffix
