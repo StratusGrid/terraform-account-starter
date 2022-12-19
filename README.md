@@ -109,6 +109,9 @@ This file contains the ECS account settings to enable long ARN formats and Conta
 ### `eventbridge.tf`
 This file contains the event bridge rule for if ECS, RDS, EC@, Backups, or DynamoDB don't meed the required tagging, this is only enabled if `control_tower_enabled == false`.
 
+### `guardduty.tf`
+This file contains the module for creating GuardDuty notifications Events and Topics.  Subscriptions are not configured through the module, so must be manually configured at this time.
+
 ### `iam-cicd.tf`
 This file contains the policy and role for assumption by the CICD pipeline processes in the Tooling account, if it exists. Note that the resources will only be created if the "tooling_account_id" parameter is filled in with a valid AWS account ID.
 
@@ -278,6 +281,7 @@ This file contains the plugin data for TFLint to run.
 | <a name="input_cost_anomaly_subscription_email"></a> [cost\_anomaly\_subscription\_email](#input\_cost\_anomaly\_subscription\_email) | The subscription email for AWS Cost Anomly Billing Alerts | `string` | n/a | yes |
 | <a name="input_enable_centralized_logging"></a> [enable\_centralized\_logging](#input\_enable\_centralized\_logging) | A boolean true/false to enable centralized logging to a log archive account | `bool` | n/a | yes |
 | <a name="input_env_name"></a> [env\_name](#input\_env\_name) | Environment name string to be used for decisions and name generation. Appended to name\_suffix to create full\_suffix | `string` | n/a | yes |
+| <a name="input_guardduty_notifications_enabled"></a> [guardduty\_notifications\_enabled](#input\_guardduty\_notifications\_enabled) | Toggles GuardDuty notifications. Should only be enabled if GuardDuty is enabled on the account. If GuardDuty is enabled Organization-wide via ControlTower, only enable for the delegated GuardDuty admin account. | `bool` | `false` | no |
 | <a name="input_log_archive_account"></a> [log\_archive\_account](#input\_log\_archive\_account) | A boolean true/false for is this is the log archive account in the AWS Organization, as this will control centralized logging | `bool` | n/a | yes |
 | <a name="input_log_archive_retention"></a> [log\_archive\_retention](#input\_log\_archive\_retention) | How many days to delete centralized logs | `number` | `365` | no |
 | <a name="input_logging_account_id"></a> [logging\_account\_id](#input\_logging\_account\_id) | Centralized Logging Account ID, This will only ever be used when enabling centralized logging | `string` | n/a | yes |
