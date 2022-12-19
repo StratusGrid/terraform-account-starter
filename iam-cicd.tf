@@ -41,7 +41,7 @@ module "iam_role_cicd" {
   role_requires_mfa = false
 
   custom_role_policy_arns = [
-    aws_iam_policy.cicd.arn
+    aws_iam_policy.cicd[0].arn
   ]
 
   tags = merge({ "Name" = "${var.name_prefix}-pipeline-role-CICD${local.name_suffix}" })
