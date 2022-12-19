@@ -115,6 +115,9 @@ content: |-
   ### `eventbridge.tf`
   This file contains the event bridge rule for if ECS, RDS, EC@, Backups, or DynamoDB don't meed the required tagging, this is only enabled if `control_tower_enabled == false`.
 
+  ### `guardduty.tf`
+  This file contains the module for creating GuardDuty notifications Events and Topics.  Subscriptions are not configured through the module, so must be manually configured at this time.
+
   ### `iam-cicd.tf`
   This file contains the policy and role for assumption by the CICD pipeline processes in the Tooling account, if it exists. Note that the resources will only be created if the "tooling_account_id" parameter is filled in with a valid AWS account ID.
 
