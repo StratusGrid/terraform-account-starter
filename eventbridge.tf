@@ -29,7 +29,8 @@ resource "aws_cloudwatch_event_rule" "required_tags" {
     }
   )
   is_enabled = true
-  name       = "${var.name_prefix}-backup-notifications${local.name_suffix}"
+
+  tags = merge({ "Name" = "${var.name_prefix}-backup-notifications${local.name_suffix}" }) # Common tags applied at provider level - additional tags may be added here
 }
 
 resource "aws_cloudwatch_event_target" "aws_backup_to_sns" {
