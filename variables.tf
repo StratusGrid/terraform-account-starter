@@ -118,8 +118,8 @@ variable "logging_account_id" {
   type        = string
 }
 
-variable "piksel_accounts_list" {
-  description = "This is a list of all piksel-tech AWS accounts"
+variable "accounts_list" {
+  description = "This is a list of all AWS accounts with access to artifact bucket"
   type        = list(string)
   default     = [""]
 }

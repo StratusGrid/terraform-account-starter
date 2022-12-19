@@ -1,10 +1,10 @@
 data "aws_iam_policy_document" "artifacts_bucket_policy" {
   count = var.tooling_account == true ? 1 : 0
   statement {
-    sid = "AllPikselAccountsAccessToBucket"
+    sid = "AllAccountsAccessToBucket"
     principals {
       type        = "AWS"
-      identifiers = var.piksel_accounts_list
+      identifiers = var.accounts_list
     }
 
     actions = ["s3:ListBucket"]
@@ -13,11 +13,11 @@ data "aws_iam_policy_document" "artifacts_bucket_policy" {
   }
 
   statement {
-    sid = "AllPikselAccountsAccessToObjects"
+    sid = "AllAccountsAccessToObjects"
 
     principals {
       type        = "AWS"
-      identifiers = var.piksel_accounts_list
+      identifiers = var.accounts_list
     }
 
     actions = [

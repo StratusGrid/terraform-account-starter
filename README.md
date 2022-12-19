@@ -266,6 +266,7 @@ This file contains the plugin data for TFLint to run.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_accounts_list"></a> [accounts\_list](#input\_accounts\_list) | This is a list of all AWS accounts with access to artifact bucket | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
 | <a name="input_append_name_suffix"></a> [append\_name\_suffix](#input\_append\_name\_suffix) | String to append to the name\_suffix used on object names. This is optional, so start with dash if using like so: -mysuffix. This will result in prefix-objectname-env-mysuffix | `string` | `""` | no |
 | <a name="input_aws_org_id"></a> [aws\_org\_id](#input\_aws\_org\_id) | AWS Org ID | `string` | n/a | yes |
 | <a name="input_aws_sso_enabled"></a> [aws\_sso\_enabled](#input\_aws\_sso\_enabled) | A boolean true/false for if Control Tower is deployed or will be deployed. By default this is true, and setting to true removes functions that are replaced by AWS SSO | `bool` | `true` | no |
@@ -280,7 +281,6 @@ This file contains the plugin data for TFLint to run.
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | String to use as prefix on object names | `string` | n/a | yes |
 | <a name="input_override_name_suffix"></a> [override\_name\_suffix](#input\_override\_name\_suffix) | String to completely override the name\_suffix | `string` | `""` | no |
 | <a name="input_payer_account"></a> [payer\_account](#input\_payer\_account) | A boolean true/false for if this is the payer, as this will control billing alerts | `string` | `false` | no |
-| <a name="input_piksel_accounts_list"></a> [piksel\_accounts\_list](#input\_piksel\_accounts\_list) | This is a list of all piksel-tech AWS accounts | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
 | <a name="input_prepend_name_suffix"></a> [prepend\_name\_suffix](#input\_prepend\_name\_suffix) | String to prepend to the name\_suffix used on object names. This is optional, so start with dash if using like so: -mysuffix. This will result in prefix-objectname-mysuffix-env | `string` | `""` | no |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region to target | `string` | n/a | yes |
 | <a name="input_s3_destination_bucket_name"></a> [s3\_destination\_bucket\_name](#input\_s3\_destination\_bucket\_name) | Destination Bucket Name for S3 Centralized Logging Replication | `string` | `""` | no |
