@@ -15,7 +15,7 @@ resource "aws_kms_alias" "sns_topics" {
 # Infrastructure_alerts is used to alert on infrastructure monitoring alarms etc.
 resource "aws_sns_topic" "infrastructure_alerts" {
   name     = "${var.name_prefix}-infrastructure-alerts${local.name_suffix}"
-  provider = aws.us-east-2
+  provider = aws.us-east-1
 
   kms_master_key_id = aws_kms_alias.sns_topics.arn
 }
