@@ -2,6 +2,8 @@
 resource "aws_cloudwatch_event_rule" "required_tags" {
   count = var.control_tower_enabled == false ? 1 : 0
 
+  name = "${var.name_prefix}-backup-notifications${local.name_suffix}"
+
   event_bus_name = "default"
   event_pattern = jsonencode(
     {
