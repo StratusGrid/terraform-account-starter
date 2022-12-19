@@ -20,3 +20,6 @@ logging_account_id         = "213255954913"
 # Notification Variables
 service_limit_email             = "dl@example.com"
 cost_anomaly_subscription_email = "dl@example.com"
+
+# CICD Variables
+tooling_account_id = "123123123123" # Must be filled with correct value of Tooling account which will assume the CICD role
