@@ -129,3 +129,9 @@ variable "tooling_account" {
   type        = bool
   default     = false
 }
+
+variable "tooling_account_id" {
+  description = "The account number for the tooling account. Used in IAM policy/role for use by deployment pipelines."
+  type        = string
+  default     = ""
+}

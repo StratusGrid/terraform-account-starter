@@ -246,6 +246,7 @@ This file contains the plugin data for TFLint to run.
 | [aws_cloudwatch_event_target.aws_backup_to_sns](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_target) | resource |
 | [aws_iam_account_password_policy.strict](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_account_password_policy) | resource |
 | [aws_iam_policy.approver_restrictions](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.cicd](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.read_only_restrictions](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.restricted_admin](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.s3_role_assumption](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
@@ -288,6 +289,7 @@ This file contains the plugin data for TFLint to run.
 | <a name="input_service_limit_email"></a> [service\_limit\_email](#input\_service\_limit\_email) | The subscription email for AWS Service Limits | `string` | n/a | yes |
 | <a name="input_source_repo"></a> [source\_repo](#input\_source\_repo) | URL of the repo which holds this code | `string` | n/a | yes |
 | <a name="input_tooling_account"></a> [tooling\_account](#input\_tooling\_account) | Indicates if the account currently being affected is the tooling account which runs CICD pipelines. | `bool` | `false` | no |
+| <a name="input_tooling_account_id"></a> [tooling\_account\_id](#input\_tooling\_account\_id) | The account number for the tooling account. Used in IAM policy/role for use by deployment pipelines. | `string` | `""` | no |
 | <a name="input_trusted_users_account_arns"></a> [trusted\_users\_account\_arns](#input\_trusted\_users\_account\_arns) | Account which users are provisioned in and should be granted access to cross account roles. Enter like arn:aws:iam::123456789012:root | `list(string)` | `[]` | no |
 
 ## Outputs
