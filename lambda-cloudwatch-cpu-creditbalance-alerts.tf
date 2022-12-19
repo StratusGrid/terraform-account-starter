@@ -1,4 +1,5 @@
 module "cpu_burst_balance_lambda" {
+
   source  = "StratusGrid/lambda-event-handler-cpu-creditbalance/aws"
   version = "~> 2.0"
 

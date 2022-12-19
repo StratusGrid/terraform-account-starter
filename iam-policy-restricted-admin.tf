@@ -20,20 +20,24 @@ data "aws_iam_policy_document" "restricted_admin" {
     ]
     sid = "AllowFullAdminExceptSome"
   }
-  statement {
-    not_actions = [
-      "s3:Delete*",
-      "s3:Put*",
-    ]
-    resources = [
-      module.cloudtrail.s3_bucket_arn,
-      "${module.cloudtrail.s3_bucket_arn}/*",
-    ]
-    sid = "AllowFullAdminExceptSomeS3"
+  dynamic "statement" {
+    for_each = module.cloudtrail[*].s3_bucket_arn
+    content {
+      not_actions = [
+        "s3:Delete*",
+        "s3:Put*",
+      ]
+      resources = [
+        tostring(module.cloudtrail[*].s3_bucket_arn),
+        "${module.cloudtrail[*].s3_bucket_arn}/*",
+      ]
+      sid = "AllowFullAdminExceptSomeS3"
+    }
   }
 }
 
 resource "aws_iam_policy" "restricted_admin" {
+  count       = var.aws_sso_enabled == false ? 1 : 0
   name        = "${var.name_prefix}-restricted-admin${local.name_suffix}"
   description = "Policy to grant restricted admin. This admin can't do some functions such as delete the CloudTrail audit trail."
   policy      = data.aws_iam_policy_document.restricted_admin.json

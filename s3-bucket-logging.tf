@@ -1,6 +1,6 @@
 module "s3_bucket_logging_us_east_1" {
   source  = "StratusGrid/s3-bucket-logging/aws"
-  version = "~> 2.0"
+  version = "~> 2.1"
 
   name_prefix = var.name_prefix
   name_suffix = "${local.name_suffix}-us-east-1"
@@ -10,15 +10,17 @@ module "s3_bucket_logging_us_east_1" {
   }
 
   # Uncomment the below if you wish to enable centralized logging to S3
-  /* enable_centralized_logging = true
-  s3_destination_bucket_name = var.s3_destination_bucket_name
-  iam_role_s3_replication_arn = module.iam_role_s3[0].iam_role_arn
-  logging_account_id = var.logging_account_id */
+  # enable_centralized_logging  = var.enable_centralized_logging
+  # enable_object_expiration    = true
+  # days_to_object_expiration   = 14
+  # s3_destination_bucket_name  = var.s3_destination_bucket_name
+  # iam_role_s3_replication_arn = var.s3_replication_iam_role_arn
+  # logging_account_id          = var.logging_account_id
 }
 
 module "s3_bucket_logging_us_east_2" {
   source  = "StratusGrid/s3-bucket-logging/aws"
-  version = "~> 2.0"
+  version = "~> 2.1"
 
   name_prefix = var.name_prefix
   name_suffix = "${local.name_suffix}-us-east-2"
@@ -28,10 +30,12 @@ module "s3_bucket_logging_us_east_2" {
   }
 
   # Uncomment the below if you wish to enable centralized logging to S3
-  /* enable_centralized_logging = true
-  s3_destination_bucket_name = var.s3_destination_bucket_name
-  iam_role_s3_replication_arn = module.iam_role_s3[0].iam_role_arn
-  logging_account_id = var.logging_account_id */
+  # enable_centralized_logging  = var.enable_centralized_logging
+  # enable_object_expiration    = true
+  # days_to_object_expiration   = 14
+  # s3_destination_bucket_name  = var.s3_destination_bucket_name
+  # iam_role_s3_replication_arn = var.s3_replication_iam_role_arn
+  # logging_account_id          = var.logging_account_id
 }
 
 module "s3_bucket_logging_us_west_1" {
@@ -45,16 +49,16 @@ module "s3_bucket_logging_us_west_1" {
     aws = aws.us-west-1
   }
 
-  # Uncomment the below if you wish to enable centralized logging to S3
-  /* enable_centralized_logging = true
-  s3_destination_bucket_name = var.s3_destination_bucket_name
-  iam_role_s3_replication_arn = module.iam_role_s3[0].iam_role_arn
-  logging_account_id = var.logging_account_id */
+  #   # Uncomment the below if you wish to enable centralized logging to S3
+  #   /* enable_centralized_logging = true
+  #   s3_destination_bucket_name = var.s3_destination_bucket_name
+  #   iam_role_s3_replication_arn = module.iam_role_s3[0].iam_role_arn
+  #   logging_account_id = var.logging_account_id */
 }
 
 module "s3_bucket_logging_us_west_2" {
   source  = "StratusGrid/s3-bucket-logging/aws"
-  version = "~> 2.0"
+  version = "~> 2.1"
 
   name_prefix = var.name_prefix
   name_suffix = "${local.name_suffix}-us-west-2"
@@ -64,8 +68,10 @@ module "s3_bucket_logging_us_west_2" {
   }
 
   # Uncomment the below if you wish to enable centralized logging to S3
-  /* enable_centralized_logging = true
-  s3_destination_bucket_name = var.s3_destination_bucket_name
-  iam_role_s3_replication_arn = module.iam_role_s3[0].iam_role_arn
-  logging_account_id = var.logging_account_id */
+  # enable_centralized_logging  = var.enable_centralized_logging
+  # enable_object_expiration    = true
+  # days_to_object_expiration   = 14
+  # s3_destination_bucket_name  = var.s3_destination_bucket_name
+  # iam_role_s3_replication_arn = var.s3_replication_iam_role_arn
+  # logging_account_id          = var.logging_account_id
 }

@@ -2,7 +2,7 @@
 region      = "us-east-1"
 name_prefix = "sgdev"
 env_name    = "dev"
-source_repo = "https://github.com/StratusGrid/template-terraform-aws-shared"
+source_repo = "https://github.com/StratusGrid/terraform-account-starter"
 
 # Logic Variables
 payer_account                  = false

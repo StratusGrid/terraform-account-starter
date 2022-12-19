@@ -23,7 +23,7 @@ output "log_bucket_ids" {
   value = [
     module.s3_bucket_logging_us_east_1.bucket_id,
     module.s3_bucket_logging_us_east_2.bucket_id,
-    module.s3_bucket_logging_us_west_1.bucket_id,
+    # module.s3_bucket_logging_us_west_1.bucket_id,
     module.s3_bucket_logging_us_west_2.bucket_id
   ]
 }

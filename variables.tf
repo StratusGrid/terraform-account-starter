@@ -105,8 +105,27 @@ variable "s3_destination_bucket_name" {
   default     = ""
 }
 
+# tflint-ignore: terraform_unused_declarations this is being used for enabling bucket logging on s3-bucket-logging.tf, but the code it's commented so it's not catching it.
+variable "s3_replication_iam_role_arn" {
+  description = "This is the ARN of the IAM role assumed by the source account which allows writing to the central logging bucket."
+  type        = string
+  default     = ""
+}
+
 # tflint-ignore: terraform_unused_declarations
 variable "logging_account_id" {
   description = "Centralized Logging Account ID, This will only ever be used when enabling centralized logging"
   type        = string
+}
+
+variable "accounts_list" {
+  description = "This is a list of all AWS accounts with access to artifact bucket"
+  type        = list(string)
+  default     = [""]
+}
+
+variable "tooling_account" {
+  description = "Indicates if the account currently being affected is the tooling account which runs CICD pipelines."
+  type        = bool
+  default     = false
 }
