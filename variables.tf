@@ -135,3 +135,9 @@ variable "tooling_account_id" {
   type        = string
   default     = ""
 }
+
+variable "guardduty_notifications_enabled" {
+  description = "Toggles GuardDuty notifications. Should only be enabled if GuardDuty is enabled on the account. If GuardDuty is enabled Organization-wide via ControlTower, only enable for the delegated GuardDuty admin account."
+  type        = bool
+  default     = false
+}
