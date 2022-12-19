@@ -1,5 +1,4 @@
 module "ebs_burst_balance_lambda" {
-  count = 0
 
   source  = "StratusGrid/lambda-event-handler-ebs-burstbalance/aws"
   version = "~> 2.0"
