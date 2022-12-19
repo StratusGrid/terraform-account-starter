@@ -25,7 +25,7 @@ module "iam_cross_account_trust_map_restricted_admin" {
   ]
 
   require_mfa = true
-  input_tags  = merge() # This is blank for module compatability, we feed it null tags as our provider level will take over
+  input_tags  = merge() # Common tags applied at provider level - additional tags may be added here
 }
 
 module "iam_group_restricted_read_only" {
@@ -50,7 +50,7 @@ module "iam_cross_account_trust_map_restricted_read_only" {
   ]
 
   require_mfa = true
-  input_tags  = merge() # This is blank for module compatability, we feed it null tags as our provider level will take over
+  input_tags  = merge() # Common tags applied at provider level - additional tags may be added here
 }
 
 module "iam_group_restricted_approver" {
@@ -75,5 +75,5 @@ module "iam_cross_account_trust_map_restricted_approver" {
   ]
 
   require_mfa = true
-  input_tags  = merge() # This is blank for module compatability, we feed it null tags as our provider level will take over
+  input_tags  = merge() # Common tags applied at provider level - additional tags may be added here
 }
