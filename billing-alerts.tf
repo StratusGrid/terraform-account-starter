@@ -1,7 +1,7 @@
 module "aws_anomaly_detection_alerts" {
   count      = var.payer_account == true ? 1 : 0 # Only enable if this is a payer account
   source     = "StratusGrid/anomaly-detection-alerts/aws"
-  version    = "~> 2.0"
+  version    = "~> 3.0"
   name       = "${var.name_prefix}-anomaly-detection-alerts${local.name_suffix}"
   input_tags = merge() # This is blank for module compatability, we feed it null tags as our provider level will take over
 
