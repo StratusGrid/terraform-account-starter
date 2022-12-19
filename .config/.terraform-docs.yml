@@ -115,6 +115,9 @@ content: |-
   ### `eventbridge.tf`
   This file contains the event bridge rule for if ECS, RDS, EC@, Backups, or DynamoDB don't meed the required tagging, this is only enabled if `control_tower_enabled == false`.
 
+  ### `iam-cicd.tf`
+  This file contains the policy and role for assumption by the CICD pipeline processes in the Tooling account, if it exists. Note that the resources will only be created if the "tooling_account_id" parameter is filled in with a valid AWS account ID.
+
   ### `iam-cross-account-trust-maps.tf`
   This file contains the SG module for configuring IAM for cross account trusts, this is only enabled if `aws_sso_enabled == false` except for the IAM self service module.
   
