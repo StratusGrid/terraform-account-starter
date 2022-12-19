@@ -17,6 +17,8 @@ data "aws_iam_policy_document" "cicd" {
 }
 
 resource "aws_iam_policy" "cicd" {
+  count = var.tooling_account_id == "" ? 0 : 1
+
   name        = "CICD-policy"
   description = "Policy to grant restricted admin for the CICD role. This admin can't do some functions such as delete the CloudTrail audit trail."
   policy      = data.aws_iam_policy_document.cicd.json
@@ -24,6 +26,8 @@ resource "aws_iam_policy" "cicd" {
 
 
 module "iam_role_cicd" {
+  count = var.tooling_account_id == "" ? 0 : 1
+
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
   version = "~> 5.9"
 
