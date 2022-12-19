@@ -23,15 +23,6 @@ aws rds add-tags-to-resource --resource-name "arn:aws:rds:us-west-1:<account_num
 aws rds add-tags-to-resource --resource-name "arn:aws:rds:us-west-2:<account_number>:secgrp:default" --tags "[{\"Key\": \"Environment\",\"Value\": \"<env>\"},{\"Key\": \"Customer\",\"Value\": \"Shared\"}]" --region us-west-2
 ```
 
-- Enable updated account features for ECS
-```bash
-aws ecs put-account-setting-default --name serviceLongArnFormat --value enabled --region us-east-1
-aws ecs put-account-setting-default --name taskLongArnFormat --value enabled --region us-east-1
-aws ecs put-account-setting-default --name containerInstanceLongArnFormat --value enabled --region us-east-1
-aws ecs put-account-setting-default --name awsvpcTrunking --value enabled --region us-east-1
-aws ecs put-account-setting-default --name containerInsights --value enabled --region us-east-1
-```
-
 ## Centralized Logging
 
 This repo is fully configured to allow for centralized logging with S3 and it's controlled via a few variables. To enable centralized logging set the following variables `log_archive_retention`, `aws_org_id`, `s3_destination_bucket_name`, `logging_account_id` to the required values and uncomment this block in `s3-bucket-logging.tf`.
@@ -111,6 +102,9 @@ This data file contains all references for data providers, these are fairly gene
 
 ### `ec2-default-instance-profile.tf`
 The file contains the SG module for building our EC2 Instance IAM Role that enables SSM, and CloudWatch Publishing.
+
+### `ecs-account-settings.tf`
+This file contains the ECS account settings to enable long ARN formats and Container Insights
 
 ### `eventbridge.tf`
 This file contains the event bridge rule for if ECS, RDS, EC@, Backups, or DynamoDB don't meed the required tagging, this is only enabled if `control_tower_enabled == false`.
@@ -244,6 +238,11 @@ This file contains the plugin data for TFLint to run.
 |------|------|
 | [aws_cloudwatch_event_rule.required_tags](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_rule) | resource |
 | [aws_cloudwatch_event_target.aws_backup_to_sns](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_target) | resource |
+| [aws_ecs_account_setting_default.aws_vpc_trunking](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_account_setting_default) | resource |
+| [aws_ecs_account_setting_default.container_insights](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_account_setting_default) | resource |
+| [aws_ecs_account_setting_default.container_instance_long_arn_format](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_account_setting_default) | resource |
+| [aws_ecs_account_setting_default.service_long_arn_format](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_account_setting_default) | resource |
+| [aws_ecs_account_setting_default.task_long_arn_format](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_account_setting_default) | resource |
 | [aws_iam_account_password_policy.strict](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_account_password_policy) | resource |
 | [aws_iam_policy.approver_restrictions](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.cicd](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
