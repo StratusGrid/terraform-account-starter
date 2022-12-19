@@ -72,12 +72,18 @@ module "accounts_artifacts_bucket" {
   # Object Retention Rule
   lifecycle_rule = [
     {
-      id      = "Object-Archiving"
+      id      = "Object-Expiration"
       enabled = true
 
-      transition = {
-        days          = 30
-        storage_class = "STANDARD_IA"
+      abort_incomplete_multipart_upload_days = 7
+
+      expiration = {
+        days = 30
+      }
+
+      noncurrent_version_expiration = {
+        newer_noncurrent_versions = 1
+        days                      = 1
       }
     }
   ]
