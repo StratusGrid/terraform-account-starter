@@ -3,25 +3,28 @@ data "aws_iam_policy" "read_only_access" {
 }
 
 data "aws_iam_policy_document" "read_only_restrictions" {
-  statement {
-    effect = "Deny"
-    actions = [
-      "s3:GetObject",
-      "s3:GetObjectVersion",
-      "s3:GetObjectVersionForReplication",
-      "lambda:GetFunction",
-      "workdocs:Get*",
-      "workmail:Get*",
-      "athena:GetQueryResults*",
-    ]
-    not_resources = [
-      "${module.s3_bucket_logging_us_east_1.bucket_arn}/*",
-      "${module.s3_bucket_logging_us_east_2.bucket_arn}/*",
-      "${module.s3_bucket_logging_us_west_1.bucket_arn}/*",
-      "${module.s3_bucket_logging_us_west_2.bucket_arn}/*",
-      "${module.cloudtrail.s3_bucket_arn}/*",
-    ]
-    sid = "DenyReadOnlyDataRetrieval"
+  dynamic "statement" {
+    for_each = module.cloudtrail[*].s3_bucket_arn
+    content {
+      effect = "Deny"
+      actions = [
+        "s3:GetObject",
+        "s3:GetObjectVersion",
+        "s3:GetObjectVersionForReplication",
+        "lambda:GetFunction",
+        "workdocs:Get*",
+        "workmail:Get*",
+        "athena:GetQueryResults*",
+      ]
+      not_resources = [
+        "${module.s3_bucket_logging_us_east_1.bucket_arn}/*",
+        "${module.s3_bucket_logging_us_east_2.bucket_arn}/*",
+        "${module.s3_bucket_logging_us_west_1.bucket_arn}/*",
+        "${module.s3_bucket_logging_us_west_2.bucket_arn}/*",
+        "${module.cloudtrail[*].s3_bucket_arn}/*",
+      ]
+      sid = "DenyReadOnlyDataRetrieval"
+    }
   }
   statement {
     effect = "Deny"

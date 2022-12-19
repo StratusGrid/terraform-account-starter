@@ -26,7 +26,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "central_logging" {
 
     id = "delete_after_${var.log_archive_retention}"
 
-    status = true
+    status = "Enabled"
 
     # Move everything to IA after 30 days
     transition {

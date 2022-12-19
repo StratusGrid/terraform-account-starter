@@ -235,7 +235,7 @@ This file contains the plugin data for TFLint to run.
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.1 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.9 |
 
 ## Resources
@@ -280,11 +280,14 @@ This file contains the plugin data for TFLint to run.
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | String to use as prefix on object names | `string` | n/a | yes |
 | <a name="input_override_name_suffix"></a> [override\_name\_suffix](#input\_override\_name\_suffix) | String to completely override the name\_suffix | `string` | `""` | no |
 | <a name="input_payer_account"></a> [payer\_account](#input\_payer\_account) | A boolean true/false for if this is the payer, as this will control billing alerts | `string` | `false` | no |
+| <a name="input_piksel_accounts_list"></a> [piksel\_accounts\_list](#input\_piksel\_accounts\_list) | This is a list of all piksel-tech AWS accounts | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
 | <a name="input_prepend_name_suffix"></a> [prepend\_name\_suffix](#input\_prepend\_name\_suffix) | String to prepend to the name\_suffix used on object names. This is optional, so start with dash if using like so: -mysuffix. This will result in prefix-objectname-mysuffix-env | `string` | `""` | no |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region to target | `string` | n/a | yes |
 | <a name="input_s3_destination_bucket_name"></a> [s3\_destination\_bucket\_name](#input\_s3\_destination\_bucket\_name) | Destination Bucket Name for S3 Centralized Logging Replication | `string` | `""` | no |
+| <a name="input_s3_replication_iam_role_arn"></a> [s3\_replication\_iam\_role\_arn](#input\_s3\_replication\_iam\_role\_arn) | This is the ARN of the IAM role assumed by the source account which allows writing to the central logging bucket. | `string` | `""` | no |
 | <a name="input_service_limit_email"></a> [service\_limit\_email](#input\_service\_limit\_email) | The subscription email for AWS Service Limits | `string` | n/a | yes |
 | <a name="input_source_repo"></a> [source\_repo](#input\_source\_repo) | URL of the repo which holds this code | `string` | n/a | yes |
+| <a name="input_tooling_account"></a> [tooling\_account](#input\_tooling\_account) | Indicates if the account currently being affected is the tooling account which runs CICD pipelines. | `bool` | `false` | no |
 | <a name="input_trusted_users_account_arns"></a> [trusted\_users\_account\_arns](#input\_trusted\_users\_account\_arns) | Account which users are provisioned in and should be granted access to cross account roles. Enter like arn:aws:iam::123456789012:root | `list(string)` | `[]` | no |
 
 ## Outputs

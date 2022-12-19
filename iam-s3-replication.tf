@@ -38,6 +38,8 @@ data "aws_iam_policy_document" "s3_replication" {
 }
 
 resource "aws_iam_policy" "s3_role_assumption" {
+  count = var.log_archive_account == true ? 1 : 0
+
   name        = "S3-replication-policy"
   description = "Policy to allow S3 role assumption for centralized logging"
   policy      = data.aws_iam_policy_document.s3_replication.json
@@ -45,7 +47,7 @@ resource "aws_iam_policy" "s3_role_assumption" {
 
 
 module "iam_role_s3" {
-  count = var.log_archive_account == true && var.enable_centralized_logging == true ? 1 : 0
+  count = var.log_archive_account == true ? 1 : 0
 
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
   version = "~> 5.0"
@@ -58,7 +60,7 @@ module "iam_role_s3" {
   role_name = "${var.name_prefix}-s3-central-replication${local.name_suffix}" #The assuming account matches it based upon name
 
   custom_role_policy_arns = [
-    aws_iam_policy.s3_role_assumption.arn
+    aws_iam_policy.s3_role_assumption[0].arn
   ]
 
   tags = {

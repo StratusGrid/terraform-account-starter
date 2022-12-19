@@ -105,8 +105,26 @@ variable "s3_destination_bucket_name" {
   default     = ""
 }
 
+variable "s3_replication_iam_role_arn" {
+  description = "This is the ARN of the IAM role assumed by the source account which allows writing to the central logging bucket."
+  type        = string
+  default     = ""
+}
+
 # tflint-ignore: terraform_unused_declarations
 variable "logging_account_id" {
   description = "Centralized Logging Account ID, This will only ever be used when enabling centralized logging"
   type        = string
+}
+
+variable "piksel_accounts_list" {
+  description = "This is a list of all piksel-tech AWS accounts"
+  type        = list(string)
+  default     = [""]
+}
+
+variable "tooling_account" {
+  description = "Indicates if the account currently being affected is the tooling account which runs CICD pipelines."
+  type        = bool
+  default     = false
 }
