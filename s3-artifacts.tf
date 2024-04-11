@@ -39,7 +39,7 @@ module "accounts_artifacts_bucket" {
   count = var.tooling_account == true ? 1 : 0
 
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.0"
+  version = "~> 4.0"
 
   bucket        = "${var.name_prefix}-pipeline-artifacts${local.name_suffix}"
   force_destroy = false
