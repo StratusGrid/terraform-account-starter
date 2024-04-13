@@ -15,7 +15,7 @@ resource "aws_ssm_parameter" "slack_channel_key" {
 
 module "aws_limits" {
   source  = "StratusGrid/limits-monitor/aws"
-  version = "1.1.0"
+  version = "1.2.1"
 
   input_tags = merge() # Module input tags
 
